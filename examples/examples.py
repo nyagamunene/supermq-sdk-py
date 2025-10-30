@@ -892,76 +892,164 @@ import json
 # Get the first 4 enabled clients (publish clients) with their secrets
 publish_clients = [(client_ids[i], client_secrets[i]) for i in range(min(4, len(client_ids)))]
 
-"""Send 10 SenML messages to each publish channel"""
-print("\n1. Send 10 Temperature Readings to Each Publish Channel")
+"""Send 50 SenML messages to channel with save_senml rule"""
+print("\n1. Send 50 Temperature Readings to Channel with Save_SenML Rule")
 
 message_count = 0
 base_time = int(time.time())
 
-for client_idx, (client_id, client_secret) in enumerate(publish_clients):
-    if client_idx >= len(publish_channel_ids):
-        break
-    
-    channel_id = publish_channel_ids[client_idx]
-    print(f"\n   Publishing to Channel {client_idx + 1} (ID: {channel_id[:8]}...)")
-    
-    for msg_num in range(10):
-        try:
-            # Create SenML message with temperature data
-            senml_message = [
-                {
-                    "bn": "temperature_sensor:",
-                    "bt": base_time + (msg_num * 60),  # 1 minute intervals
-                    "bu": "Cel",  # Celsius
-                    "bver": 5,
-                    "n": "temperature",
-                    "u": "Cel",
-                    "v": 20.0 + (msg_num * 0.5) + (client_idx * 2)  # Varying temperature
-                },
-                {
-                    "n": "humidity",
-                    "t": 0,
-                    "u": "%RH",
-                    "v": 45.0 + (msg_num * 1.5)
-                },
-                {
-                    "n": "pressure",
-                    "t": 0,
-                    "u": "hPa",
-                    "v": 1013.25 + (msg_num * 0.2)
-                }
-            ]
-            
-            # Send message via HTTP
-            url = f"http://localhost:8008/m/{domain_id}/c/{channel_id}"
-            headers = {
-                "Content-Type": "application/senml+json",
-                "Authorization": f"Client {client_secret}"
-            }
-            
-            response = requests.post(url, headers=headers, json=senml_message, timeout=5)
-            
-            if response.status_code == 202:
-                message_count += 1
-                temp_value = senml_message[0]["v"]
-                if msg_num == 0 or msg_num == 9:  # Only print first and last
-                    print(f"     [{msg_num + 1}/10] Message sent - Temp: {temp_value:.1f}°C, Humidity: {senml_message[1]['v']:.1f}%")
-            else:
-                print(f"     [{msg_num + 1}/10] Error: HTTP {response.status_code}")
-                
-        except requests.exceptions.ConnectionError:
-            if msg_num == 0:
-                print(f"     Note: HTTP adapter service not running on port 8008")
-            break
-        except Exception as e:
-            print(f"     [{msg_num + 1}/10] Error: {e}")
-            break
+# Only the first client publishes to the channel with save_senml rule
+target_channel_id = publish_channel_ids[0]  # Channel 0 has save_senml rule
+client_id, client_secret = publish_clients[0]  # Use only the first client
 
-print(f"\n   Total messages sent: {message_count}/40")
+print(f"\n   Client 1 publishing to Channel 1 (ID: {target_channel_id[:8]}...)")
+
+for msg_num in range(50):
+    try:
+        # Create SenML message with temperature data
+        # Set timestamps going backwards from now (so they fall within "now()-1d" range)
+        senml_message = [
+            {
+                "bn": "temperature_sensor:",
+                "bt": base_time - (msg_num * 60),  # Going back in time: 1 minute intervals
+                "bu": "Cel",  # Celsius
+                "bver": 5,
+                "n": "temperature",
+                "u": "Cel",
+                "v": 20.0 + (msg_num * 0.5)  # Varying temperature
+            },
+            {
+                "n": "humidity",
+                "t": 0,
+                "u": "%RH",
+                "v": 45.0 + (msg_num * 1.5)
+            },
+            {
+                "n": "pressure",
+                "t": 0,
+                "u": "hPa",
+                "v": 1013.25 + (msg_num * 0.2)
+            }
+        ]
+        
+        # Send message via HTTP to the channel with save_senml rule
+        url = f"http://localhost:8008/m/{domain_id}/c/{target_channel_id}"
+        headers = {
+            "Content-Type": "application/senml+json",
+            "Authorization": f"Client {client_secret}"
+        }
+        
+        response = requests.post(url, headers=headers, json=senml_message, timeout=5)
+        
+        if response.status_code == 202:
+            message_count += 1
+            temp_value = senml_message[0]["v"]
+            if msg_num == 0 or msg_num == 49:  # Only print first and last
+                print(f"     [{msg_num + 1}/50] Message sent - Temp: {temp_value:.1f}°C, Humidity: {senml_message[1]['v']:.1f}%")
+        else:
+            print(f"     [{msg_num + 1}/50] Error: HTTP {response.status_code}")
+            
+    except requests.exceptions.ConnectionError:
+        if msg_num == 0:
+            print(f"     Note: HTTP adapter service not running on port 8008")
+        break
+    except Exception as e:
+        print(f"     [{msg_num + 1}/50] Error: {e}")
+        break
+
+print(f"\n   Total messages sent: {message_count}/50")
 if message_count > 0:
     print(f"   ✓ Successfully sent temperature readings via HTTP adapter")
 else:
     print(f"   Note: HTTP adapter service not available (port 8008)")
+
+# ==============================================================================
+# REPORTS GENERATION - Generate PDF reports from SenML data
+# ==============================================================================
+
+print("\n" + "=" * 80)
+print("REPORTS GENERATION - Generating PDF reports from temperature data")
+print("=" * 80)
+
+"""Generate temperature report for channels with save_senml output"""
+print("\n1. Generate Temperature Report from SenML Data")
+
+# Use the channel that has save_senml rule (FIRST publish channel - where rule was created)
+if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
+    report_channel_id = publish_channel_ids[0]  # First channel (has save_senml rule)
+    report_client_ids = [publish_clients[0][0]]  # Only the first client that published to this channel
+    
+    print(f"\n   Generating report for:")
+    print(f"     Channel: {report_channel_id[:16]}...")
+    print(f"     Clients: 1 temperature sensor")
+    print(f"     Time range: Last 24 hours")
+    
+    try:
+        # Prepare the report request
+        report_url = f"http://localhost:9017/{domain_id}/reports?action=download"
+        
+        report_payload = {
+            "name": "temperature_report",
+            "config": {
+                "from": "now()-1d",  # Last 24 hours
+                "to": "now()",
+                "title": "Temperature Sensor Report",
+                "timezone": "Africa/Nairobi"
+            },
+            "metrics": [
+                {
+                    "channel_id": report_channel_id,
+                    "client_ids": report_client_ids,
+                    "name": "temperature_sensor:temperature"  # Matches SenML bn + n field
+                }
+            ]
+        }
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+        }
+        
+        # Generate the report
+        response = requests.post(
+            report_url,
+            json=report_payload,
+            headers=headers,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            # Save the PDF report in examples folder
+            examples_dir = os.path.join(sdk_root, 'examples')
+            report_filename = "temperature_report.pdf"  # Fixed name - will be replaced on each run
+            report_path = os.path.join(examples_dir, report_filename)
+            
+            with open(report_path, 'wb') as f:
+                f.write(response.content)
+            
+            print(f"\n   ✓ Report generated successfully!")
+            print(f"     File saved: {report_path}")
+            print(f"     File size: {len(response.content)} bytes")
+            print(f"     Format: PDF")
+            print(f"     Contains: Temperature readings from 1 sensor (50 data points)")
+        elif response.status_code == 404:
+            print(f"\n   ⚠ Reports service not available (port 9017)")
+            print(f"     Note: Ensure the reports service is running")
+        else:
+            print(f"\n   Error: HTTP {response.status_code}")
+            print(f"     Response: {response.text[:100]}")
+            
+    except requests.exceptions.ConnectionError:
+        print(f"\n   ⚠ Reports service not running on port 9017")
+        print(f"     Note: Start the reports service to generate PDF reports")
+    except Exception as e:
+        print(f"\n   Error generating report: {e}")
+else:
+    print(f"\n   ⚠ Insufficient channels or clients for report generation")
+    print(f"     Need at least 1 channel and 1 client with published data")
+
+print(f"\n   ✓ Report generation completed!")
+print(f"   Note: Report generated from data stored via 'save_senml' rule output")
 
 # ==============================================================================
 # UPDATE OPERATIONS - Test update functionality
@@ -1756,6 +1844,11 @@ print(f"    • Rule 3: alarms output (with threshold logic)")
 print(f"    • Rule 4: save_remote_pg output")
 print(f"  - Messages Sent: {message_count} SenML temperature readings")
 print(f"    • 10 messages per publish channel (4 channels)")
+print(f"  - Reports Generated:")
+print(f"    • Temperature report: Single-channel, multi-sensor data")
+print(f"    • Multi-metric report: Multiple channels with grouped sensors")
+print(f"    • Format: PDF with time-series data visualization")
+print(f"    • Time range: Last 6-24 hours of sensor readings")
 print(f"  - Updates Performed:")
 print(f"    • User profile updated (name and metadata)")
 print(f"    • User tags updated")

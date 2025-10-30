@@ -253,17 +253,15 @@ except Exception as e:
 
 print("\n")
 
-# Global variables for storing created resources
 token = None
 user_id = None
 client_ids = []
-client_secrets = []  # Store client secrets for messaging
+client_secrets = []
 channel_ids = []
 group_ids = []
 domain_id = None
 domain_id_disabled = None
 
-# Generate random credentials for this run
 random_username = random_string(10)
 random_password = "12345678"
 random_first_name = random_string(6).capitalize()
@@ -315,12 +313,10 @@ try:
         body={"username": random_username, "password": random_password}
     )
     print(f"   Success!")
-    # Extract the access token from the response
     if hasattr(response, 'access_token'):
         token = response.access_token
         print(f"   Access Token: {token[:20]}...")
         
-        # Set the authorization header for all API clients that need it
         users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
@@ -339,7 +335,6 @@ try:
         token = response['access_token']
         print(f"   Access Token: {token[:20]}...")
         
-        # Set the authorization header for all API clients that need it
         users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
@@ -427,7 +422,6 @@ print("\n6. Get Profile")
 try:
     response = users_api.get_profile()
     print(f"   Success: User profile retrieved")
-    # Extract user_id if available
     if hasattr(response, 'id'):
         user_id = response.id
         print(f"   User ID: {user_id}")
@@ -560,8 +554,6 @@ else:
 """List channels"""
 print("\n3. List Channels")
 try:
-    # Note: There's a bug in the generated SDK where the response model
-    # expects 'offset' in the response but the API doesn't return it
     response = channels_api.list_channels(
         domain_id=domain_id,
         offset=0,
@@ -583,13 +575,12 @@ except Exception as e:
     print(f"   Error: {e}")
 
 """Connect enabled clients to enabled channels (first 8 of each)"""
-enabled_client_ids = client_ids[:8]  # First 8 are enabled
-enabled_channel_ids = channel_ids[:8]  # First 8 are enabled
+enabled_client_ids = client_ids[:8]
+enabled_channel_ids = channel_ids[:8]
 
 if enabled_client_ids and enabled_channel_ids:
     print("\n4. Connect Enabled Clients to Enabled Channels")
     
-    # First 4 connections: publish type
     publish_client_ids = enabled_client_ids[:4]
     publish_channel_ids = enabled_channel_ids[:4]
     
@@ -609,7 +600,6 @@ if enabled_client_ids and enabled_channel_ids:
     except Exception as e:
         print(f"   Error: {e}")
     
-    # Last 4 connections: subscribe type
     subscribe_client_ids = enabled_client_ids[4:]
     subscribe_channel_ids = enabled_channel_ids[4:]
     
@@ -651,7 +641,6 @@ for i in range(10):
             "status": "enabled"
         }
         
-        # Add parent_id if this is not the first group
         if parent_id:
             body["parent_id"] = parent_id
             
@@ -663,7 +652,6 @@ for i in range(10):
             group_ids.append(response.id)
             parent_info = f", Parent: {parent_id[:8]}..." if parent_id else " (Root)"
             print(f"   [{i+1}/10] Group created: {group_name} (ID: {response.id[:8]}...{parent_info})")
-            # Set this group as parent for the next iteration
             parent_id = response.id
     except Exception as e:
         print(f"   [{i+1}/10] Error: {e}")
@@ -714,13 +702,10 @@ print("\n" + "=" * 80)
 print("RULES OPERATIONS (Magistrala) - Creating 4 rules with different outputs")
 print("=" * 80)
 
-# Get the first 4 enabled channels (publish channels)
 publish_channel_ids = [cid for i, cid in enumerate(channel_ids) if i < len(channel_ids) - 2][:4]
 
-"""Create 4 rules with different outputs"""
 print("\n1. Create 4 Rules with Different Outputs")
 
-# Rule 1: Output to another channel
 if len(publish_channel_ids) >= 2:
     try:
         rule_name = f"rule_channels_{random_string(6)}"
@@ -750,7 +735,6 @@ if len(publish_channel_ids) >= 2:
     except Exception as e:
         print(f"   [1/4] Error creating rule: {e}")
 
-# Rule 2: Save to SenML
 if len(publish_channel_ids) >= 1:
     try:
         rule_name = f"rule_senml_{random_string(6)}"
@@ -778,7 +762,6 @@ if len(publish_channel_ids) >= 1:
     except Exception as e:
         print(f"   [2/4] Error creating rule: {e}")
 
-# Rule 3: Alarm processing with threshold logic
 if len(publish_channel_ids) >= 1:
     try:
         rule_name = f"rule_alarms_{random_string(6)}"
@@ -840,7 +823,6 @@ return logicFunction()"""
     except Exception as e:
         print(f"   [3/4] Error creating rule: {e}")
 
-# Rule 4: Save to remote PostgreSQL
 if len(publish_channel_ids) >= 1:
     try:
         rule_name = f"rule_remote_pg_{random_string(6)}"
@@ -898,7 +880,6 @@ import requests
 import time
 import json
 
-# Get the first 4 enabled clients (publish clients) with their secrets
 publish_clients = [(client_ids[i], client_secrets[i]) for i in range(min(4, len(client_ids)))]
 
 """Send 50 SenML messages to channel with save_senml rule"""
@@ -907,25 +888,22 @@ print("\n1. Send 50 Temperature Readings to Channel with Save_SenML Rule")
 message_count = 0
 base_time = int(time.time())
 
-# Only the first client publishes to the channel with save_senml rule
-target_channel_id = publish_channel_ids[0]  # Channel 0 has save_senml rule
-client_id, client_secret = publish_clients[0]  # Use only the first client
+target_channel_id = publish_channel_ids[0]
+client_id, client_secret = publish_clients[0]
 
 print(f"\n   Client 1 publishing to Channel 1 (ID: {target_channel_id[:8]}...)")
 
 for msg_num in range(50):
     try:
-        # Create SenML message with temperature data
-        # Set timestamps going backwards from now (so they fall within "now()-1d" range)
         senml_message = [
             {
                 "bn": "temperature_sensor:",
-                "bt": base_time - (msg_num * 60),  # Going back in time: 1 minute intervals
-                "bu": "Cel",  # Celsius
+                "bt": base_time - (msg_num * 60),
+                "bu": "Cel",
                 "bver": 5,
                 "n": "temperature",
                 "u": "Cel",
-                "v": 20.0 + (msg_num * 0.5)  # Varying temperature
+                "v": 20.0 + (msg_num * 0.5)
             },
             {
                 "n": "humidity",
@@ -941,7 +919,6 @@ for msg_num in range(50):
             }
         ]
         
-        # Send message via HTTP to the channel with save_senml rule
         url = f"http://localhost:8008/m/{domain_id}/c/{target_channel_id}"
         headers = {
             "Content-Type": "application/senml+json",
@@ -953,7 +930,7 @@ for msg_num in range(50):
         if response.status_code == 202:
             message_count += 1
             temp_value = senml_message[0]["v"]
-            if msg_num == 0 or msg_num == 49:  # Only print first and last
+            if msg_num == 0 or msg_num == 49:
                 print(f"     [{msg_num + 1}/50] Message sent - Temp: {temp_value:.1f}°C, Humidity: {senml_message[1]['v']:.1f}%")
         else:
             print(f"     [{msg_num + 1}/50] Error: HTTP {response.status_code}")
@@ -983,10 +960,9 @@ print("=" * 80)
 """Generate temperature report for channels with save_senml output"""
 print("\n1. Generate Temperature Report from SenML Data")
 
-# Use the channel that has save_senml rule (FIRST publish channel - where rule was created)
 if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
-    report_channel_id = publish_channel_ids[0]  # First channel (has save_senml rule)
-    report_client_ids = [publish_clients[0][0]]  # Only the first client that published to this channel
+    report_channel_id = publish_channel_ids[0]
+    report_client_ids = [publish_clients[0][0]]
     
     print(f"\n   Generating report for:")
     print(f"     Channel: {report_channel_id[:16]}...")
@@ -994,13 +970,12 @@ if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
     print(f"     Time range: Last 24 hours")
     
     try:
-        # Prepare the report request
         report_url = f"http://localhost:9017/{domain_id}/reports?action=download"
         
         report_payload = {
             "name": "temperature_report",
             "config": {
-                "from": "now()-1d",  # Last 24 hours
+                "from": "now()-1d",
                 "to": "now()",
                 "title": "Temperature Sensor Report",
                 "timezone": "Africa/Nairobi"
@@ -1009,7 +984,7 @@ if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
                 {
                     "channel_id": report_channel_id,
                     "client_ids": report_client_ids,
-                    "name": "temperature_sensor:temperature"  # Matches SenML bn + n field
+                    "name": "temperature_sensor:temperature"
                 }
             ]
         }
@@ -1019,7 +994,6 @@ if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
             "Authorization": f"Bearer {token}"
         }
         
-        # Generate the report
         response = requests.post(
             report_url,
             json=report_payload,
@@ -1028,9 +1002,8 @@ if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
         )
         
         if response.status_code == 200:
-            # Save the PDF report in examples folder
             examples_dir = os.path.join(sdk_root, 'examples')
-            report_filename = "temperature_report.pdf"  # Fixed name - will be replaced on each run
+            report_filename = "temperature_report.pdf"
             report_path = os.path.join(examples_dir, report_filename)
             
             with open(report_path, 'wb') as f:
@@ -1084,7 +1057,6 @@ try:
         alarm_count = len(response.alarms)
         print(f"   ✓ Found {alarm_count} alarms")
         
-        # Display details of first few alarms
         for idx, alarm in enumerate(response.alarms[:5]):
             alarm_ids.append(alarm.id)
             print(f"\n   Alarm {idx + 1}:")
@@ -1116,7 +1088,6 @@ if len(alarm_ids) > 0:
     first_alarm_id = alarm_ids[0]
     
     try:
-        # Acknowledge the alarm by setting acknowledged_by (status remains active)
         response = alarms_api.update_alarm(
             body={"acknowledged_by": user_id},
             domain_id=domain_id,
@@ -1145,7 +1116,6 @@ if len(alarm_ids) > 1:
     second_alarm_id = alarm_ids[1]
     
     try:
-        # Assign the alarm to the current user - must provide assigned_by field
         response = alarms_api.update_alarm(
             body={
                 "assignee_id": user_id,
@@ -1176,7 +1146,6 @@ if len(alarm_ids) > 2:
     third_alarm_id = alarm_ids[2]
     
     try:
-        # Clear (resolve) the alarm by changing status to cleared and setting resolved_by
         response = alarms_api.update_alarm(
             body={
                 "status": "cleared",
@@ -1204,7 +1173,6 @@ else:
 print("\n5. List Active Alarms (with acknowledged filter)")
 
 try:
-    # List active alarms - status can be "active", "cleared", or "all"
     response = alarms_api.list_alarms(
         domain_id=domain_id,
         status="active",
@@ -1357,17 +1325,14 @@ if group_ids:
     except Exception as e:
         print(f"   Error: {e}")
 
-"""Verify Updates - Get Updated Entities"""
 print("\n6. Verify Updates by Retrieving Entities")
 
-# Verify user update
 try:
     response = users_api.get_profile()
     print(f"   ✓ User verified: {response.first_name} {response.last_name}")
 except Exception as e:
     print(f"   User verification error: {e}")
 
-# Verify client update
 if client_ids:
     try:
         response = clients_api.get_client(
@@ -1378,7 +1343,6 @@ if client_ids:
     except Exception as e:
         print(f"   Client verification error: {e}")
 
-# Verify channel update
 if channel_ids:
     try:
         response = channels_api.get_channel(
@@ -1389,7 +1353,6 @@ if channel_ids:
     except Exception as e:
         print(f"   Channel verification error: {e}")
 
-# Verify group update
 if group_ids:
     try:
         response = groups_api.get_group(
@@ -1410,7 +1373,6 @@ print("\n" + "=" * 80)
 print("DOMAIN ROLES AND INVITATIONS")
 print("=" * 80)
 
-# Store new user IDs and emails
 invited_user_ids = []
 invited_user_emails = []
 role_ids = []
@@ -1485,7 +1447,6 @@ try:
             role_name = role.name if hasattr(role, 'name') else 'unknown'
             role_id = role.id if hasattr(role, 'id') else 'unknown'
             print(f"     - {role_name} (ID: {role_id[:16]}...)")
-            # Look for a default member/viewer role
             if role_name.lower() in ['member', 'viewer', 'guest', 'user']:
                 member_role_id = role_id
                 print(f"       ^ Using this role for adding domain members")
@@ -1497,7 +1458,6 @@ except Exception as e:
 """Add users as domain members first"""
 print("\n4. Add Domain Member Users to Domain (Required for role assignments)")
 if member_role_id and len(domain_member_ids) > 0:
-    # Add domain member users to the member role
     try:
         response = roles_api.add_domain_role_member(
             domain_id=domain_id,
@@ -1513,7 +1473,6 @@ else:
 """Create Domain Roles with different actions"""
 print("\n5. Create Domain Roles with Different Permissions")
 
-# Role 1: Read-only role with multiple members
 print("\n   a) Creating 'Viewer' role (read-only)")
 try:
     response = roles_api.create_domain_role(
@@ -1521,7 +1480,7 @@ try:
         body={
             "role_name": "viewer",
             "optional_actions": ["read", "client_read", "channel_read", "group_read"],
-            "optional_members": domain_member_ids[:3] if len(domain_member_ids) >= 3 else []  # First 3 domain members
+            "optional_members": domain_member_ids[:3] if len(domain_member_ids) >= 3 else []
         }
     )
     if response.id:
@@ -1535,7 +1494,6 @@ try:
 except Exception as e:
     print(f"   Error: {e}")
 
-# Role 2: Editor role with create/update permissions
 print("\n   b) Creating 'Editor' role (create and update)")
 try:
     response = roles_api.create_domain_role(
@@ -1547,7 +1505,7 @@ try:
                 "channel_create", "channel_update", "channel_read",
                 "group_create", "group_update", "group_read"
             ],
-            "optional_members": [domain_member_ids[3]] if len(domain_member_ids) >= 4 else []  # 4th domain member
+            "optional_members": [domain_member_ids[3]] if len(domain_member_ids) >= 4 else []
         }
     )
     if response.id:
@@ -1561,7 +1519,6 @@ try:
 except Exception as e:
     print(f"   Error: {e}")
 
-# Role 3: Admin role with full permissions
 print("\n   c) Creating 'Admin' role (full permissions)")
 try:
     response = roles_api.create_domain_role(
@@ -1577,7 +1534,7 @@ try:
                 "group_create", "group_update", "group_read", "group_delete",
                 "group_add_role_users", "group_view_role_users"
             ],
-            "optional_members": []  # Empty, will send invitation later
+            "optional_members": []
         }
     )
     if response.id:
@@ -1591,7 +1548,6 @@ try:
 except Exception as e:
     print(f"   Error: {e}")
 
-# Role 4: Role Manager role
 print("\n   d) Creating 'Role Manager' role (role management)")
 try:
     response = roles_api.create_domain_role(
@@ -1604,7 +1560,7 @@ try:
                 "channel_view_role_users", "channel_add_role_users",
                 "group_view_role_users", "group_add_role_users"
             ],
-            "optional_members": []  # Empty, will send invitation
+            "optional_members": []
         }
     )
     if response.id:
@@ -1623,7 +1579,6 @@ print(f"\n   Success: Created {len(role_ids)} roles")
 """Add invited users as members to domain roles"""
 print("\n5. Add Invited Users to Domain Roles (making them domain members)")
 
-# Add users 0 and 1 to viewer role
 if len(role_ids) > 0 and len(invited_user_ids) >= 2:
     try:
         print(f"   DEBUG: domain_id={domain_id[:20]}...")
@@ -1631,7 +1586,7 @@ if len(role_ids) > 0 and len(invited_user_ids) >= 2:
         print(f"   DEBUG: members={invited_user_ids[:2]}")
         response = roles_api.add_domain_role_member(
             domain_id=domain_id,
-            role_id=role_ids[0],  # viewer role (first role)
+            role_id=role_ids[0],
             body={"members": invited_user_ids[:2]}
         )
         print(f"   ✓ Added 2 users to 'viewer' role")
@@ -1640,12 +1595,11 @@ if len(role_ids) > 0 and len(invited_user_ids) >= 2:
     except Exception as e:
         print(f"   Error adding to viewer role: {e}")
 
-# Add user 2 to editor role  
 if len(role_ids) > 1 and len(invited_user_ids) >= 3:
     try:
         response = roles_api.add_domain_role_member(
             domain_id=domain_id,
-            role_id=role_ids[1],  # editor role (second role)
+            role_id=role_ids[1],
             body={"members": [invited_user_ids[2]]}
         )
         print(f"   ✓ Added 1 user to 'editor' role")
@@ -1659,11 +1613,10 @@ print(f"   ✓ Users are now domain members via roles and can be used in client/
 print("\n5b. Add Remaining Domain Members to Viewer Role")
 if len(role_ids) > 0 and len(domain_member_ids) > 3:
     try:
-        # Add domain members 3-7 (indices 3-7, which is 5 members) to viewer role
-        remaining_members = domain_member_ids[3:]  # Get members from index 3 onwards
+        remaining_members = domain_member_ids[3:]
         response = roles_api.add_domain_role_member(
             domain_id=domain_id,
-            role_id=role_ids[0],  # viewer role
+            role_id=role_ids[0],
             body={"members": remaining_members}
         )
         print(f"   ✓ Added {len(remaining_members)} additional domain members to 'viewer' role")
@@ -1675,14 +1628,13 @@ if len(role_ids) > 0 and len(domain_member_ids) > 3:
 """Send invitations to users for empty roles"""
 print("\n6. Send Invitations to Users")
 
-# Send invitation for admin role
 if len(invited_user_ids) > 3 and len(role_ids) > 2:
     try:
         invitations_api.send_invitation(
             domain_id=domain_id,
             body={
                 "user_id": invited_user_ids[3],
-                "role": role_names[2],  # admin role
+                "role": role_names[2],
                 "resend": False
             }
         )
@@ -1690,14 +1642,13 @@ if len(invited_user_ids) > 3 and len(role_ids) > 2:
     except Exception as e:
         print(f"   [1/2] Error sending invitation: {e}")
 
-# Send invitation for role_manager role
 if len(invited_user_ids) > 4 and len(role_ids) > 3:
     try:
         invitations_api.send_invitation(
             domain_id=domain_id,
             body={
                 "user_id": invited_user_ids[4],
-                "role": role_names[3],  # role_manager role
+                "role": role_names[3],
                 "resend": False
             }
         )
@@ -1741,7 +1692,7 @@ if len(role_ids) > 1:
         roles_api.add_domain_role_action(
             domain_id=domain_id,
             body={
-                "role": role_names[1],  # editor role
+                "role": role_names[1],
                 "actions": ["client_delete", "channel_delete"]
             }
         )
@@ -1759,14 +1710,11 @@ print("\n" + "=" * 80)
 print("CLIENT & GROUP ROLES OPERATIONS - Creating roles for clients and groups")
 print("=" * 80)
 
-# Store client and group role IDs
 client_role_ids = []
 group_role_ids = []
 
-"""Create roles for first 3 enabled clients"""
 print("\n1. Create Roles for First 3 Clients")
 
-# Client 1 - Admin role with full permissions
 if len(client_ids) >= 1:
     print(f"\n   a) Creating 'client_admin' role for Client 1")
     try:
@@ -1779,7 +1727,7 @@ if len(client_ids) >= 1:
                     "read", "update", "delete", "manage_role",
                     "add_role_users", "view_role_users"
                 ],
-                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []  # Users from viewer role
+                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1790,7 +1738,6 @@ if len(client_ids) >= 1:
     except Exception as e:
         print(f"   Error: {e}")
 
-# Client 2 - Editor role
 if len(client_ids) >= 2:
     print(f"\n   b) Creating 'client_editor' role for Client 2")
     try:
@@ -1800,7 +1747,7 @@ if len(client_ids) >= 2:
             body={
                 "role_name": "client_editor",
                 "optional_actions": ["read", "update"],
-                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1811,7 +1758,6 @@ if len(client_ids) >= 2:
     except Exception as e:
         print(f"   Error: {e}")
 
-# Client 3 - Viewer role
 if len(client_ids) >= 3:
     print(f"\n   c) Creating 'client_viewer' role for Client 3")
     try:
@@ -1821,7 +1767,7 @@ if len(client_ids) >= 3:
             body={
                 "role_name": "client_viewer",
                 "optional_actions": ["read"],
-                "optional_members": [domain_member_ids[0]] if len(domain_member_ids) >= 1 else []  # User from viewer role
+                "optional_members": [domain_member_ids[0]] if len(domain_member_ids) >= 1 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1852,10 +1798,8 @@ for i, client_id in enumerate(client_ids[:3], 1):
     except Exception as e:
         print(f"   [{i}/3] Error: {e}")
 
-"""Create roles for first 3 groups in hierarchy"""
 print("\n4. Create Roles for First 3 Groups")
 
-# Group 1 (Root) - Admin role
 if len(group_ids) >= 1:
     print(f"\n   a) Creating 'group_admin' role for Group 1 (Root)")
     try:
@@ -1869,7 +1813,7 @@ if len(group_ids) >= 1:
                     "add_role_users", "view_role_users",
                     "client_create", "client_update", "client_delete"
                 ],
-                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []  # Users from domain viewer role
+                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1880,7 +1824,6 @@ if len(group_ids) >= 1:
     except Exception as e:
         print(f"   Error: {e}")
 
-# Group 2 - Manager role
 if len(group_ids) >= 2:
     print(f"\n   b) Creating 'group_manager' role for Group 2")
     try:
@@ -1892,7 +1835,7 @@ if len(group_ids) >= 2:
                 "optional_actions": [
                     "read", "update", "client_create", "client_update"
                 ],
-                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1903,7 +1846,6 @@ if len(group_ids) >= 2:
     except Exception as e:
         print(f"   Error: {e}")
 
-# Group 3 - Member role
 if len(group_ids) >= 3:
     print(f"\n   c) Creating 'group_member' role for Group 3")
     try:
@@ -1913,7 +1855,7 @@ if len(group_ids) >= 3:
             body={
                 "role_name": "group_member",
                 "optional_actions": ["read"],
-                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []
             }
         )
         if hasattr(response, 'id'):
@@ -1926,28 +1868,25 @@ if len(group_ids) >= 3:
 
 print(f"\n   Success: Created {len(group_role_ids)} group roles")
 
-"""Add additional members to group roles"""
 print("\n5. Add Additional Members to Group Roles")
 
-# Add members to group 1 role
 if len(group_ids) >= 1 and len(invited_user_ids) >= 4:
     try:
         groups_roles_api.add_group_role_member(
             domain_id=domain_id,
             group_id=group_ids[0],
-            body={"members": [invited_user_ids[3]]}  # Add Admin user
+            body={"members": [invited_user_ids[3]]}
         )
         print(f"   [1/2] ✓ Added Admin user to Group 1 role")
     except Exception as e:
         print(f"   [1/2] Error: {e}")
 
-# Add members to group 2 role
 if len(group_ids) >= 2 and len(invited_user_ids) >= 1:
     try:
         groups_roles_api.add_group_role_member(
             domain_id=domain_id,
             group_id=group_ids[1],
-            body={"members": [invited_user_ids[0]]}  # Add Reader
+            body={"members": [invited_user_ids[0]]}
         )
         print(f"   [2/2] ✓ Added Reader to Group 2 role")
     except Exception as e:
@@ -1966,10 +1905,8 @@ for i, group_id in enumerate(group_ids[:3], 1):
     except Exception as e:
         print(f"   [{i}/3] Error: {e}")
 
-"""Add additional actions to roles"""
 print("\n7. Add Additional Actions to Roles")
 
-# Add action to client 2 role
 if len(client_ids) >= 2:
     try:
         clients_roles_api.add_client_role_action(
@@ -1981,7 +1918,6 @@ if len(client_ids) >= 2:
     except Exception as e:
         print(f"   [1/2] Error: {e}")
 
-# Add action to group 2 role
 if len(group_ids) >= 2:
     try:
         groups_roles_api.add_group_role_action(

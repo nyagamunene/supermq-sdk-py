@@ -933,9 +933,9 @@ class GroupsApi(object):
         :param bool root_group: List groups without a parent group.
         :param str status: Lists groups with the given status.
         :param str id: List groups with the given ID.
-        :param str actions: Lists groups that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List groups that the user has the given role ID on.
-        :param str role_name: List groups that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the group.
         :param bool only_total: If true, the response will contain only the total number of groups that match the query parameters.
         :return: GroupsPage
@@ -970,9 +970,9 @@ class GroupsApi(object):
         :param bool root_group: List groups without a parent group.
         :param str status: Lists groups with the given status.
         :param str id: List groups with the given ID.
-        :param str actions: Lists groups that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List groups that the user has the given role ID on.
-        :param str role_name: List groups that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the group.
         :param bool only_total: If true, the response will contain only the total number of groups that match the query parameters.
         :return: GroupsPage

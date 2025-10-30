@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**role_id** | **str** | Role unique identifier. | [optional] 
-**role_name** | **str** | Role&#x27;s name. | [optional] 
+**id** | **str** | Role unique identifier. | [optional] 
+**name** | **str** | Role&#x27;s name. | [optional] 
 **entity_id** | **str** | Entity unique identifier. | [optional] 
 **created_by** | **str** | Role creator unique identifier. | [optional] 
 **created_at** | **datetime** | Time when the channel was created. | [optional] 

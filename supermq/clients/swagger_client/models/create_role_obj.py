@@ -28,52 +28,52 @@ class CreateRoleObj(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'role_name': 'str',
+        'name': 'str',
         'optional_actions': 'list[str]',
         'optional_members': 'list[str]'
     }
 
     attribute_map = {
-        'role_name': 'role_name',
+        'name': 'name',
         'optional_actions': 'optional_actions',
         'optional_members': 'optional_members'
     }
 
-    def __init__(self, role_name=None, optional_actions=None, optional_members=None):  # noqa: E501
+    def __init__(self, name=None, optional_actions=None, optional_members=None):  # noqa: E501
         """CreateRoleObj - a model defined in Swagger"""  # noqa: E501
-        self._role_name = None
+        self._name = None
         self._optional_actions = None
         self._optional_members = None
         self.discriminator = None
-        if role_name is not None:
-            self.role_name = role_name
+        if name is not None:
+            self.name = name
         if optional_actions is not None:
             self.optional_actions = optional_actions
         if optional_members is not None:
             self.optional_members = optional_members
 
     @property
-    def role_name(self):
-        """Gets the role_name of this CreateRoleObj.  # noqa: E501
+    def name(self):
+        """Gets the name of this CreateRoleObj.  # noqa: E501
 
         Role's name.  # noqa: E501
 
-        :return: The role_name of this CreateRoleObj.  # noqa: E501
+        :return: The name of this CreateRoleObj.  # noqa: E501
         :rtype: str
         """
-        return self._role_name
+        return self._name
 
-    @role_name.setter
-    def role_name(self, role_name):
-        """Sets the role_name of this CreateRoleObj.
+    @name.setter
+    def name(self, name):
+        """Sets the name of this CreateRoleObj.
 
         Role's name.  # noqa: E501
 
-        :param role_name: The role_name of this CreateRoleObj.  # noqa: E501
+        :param name: The name of this CreateRoleObj.  # noqa: E501
         :type: str
         """
 
-        self._role_name = role_name
+        self._name = name
 
     @property
     def optional_actions(self):

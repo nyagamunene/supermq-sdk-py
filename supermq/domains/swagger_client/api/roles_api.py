@@ -32,43 +32,43 @@ class RolesApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def add_domain_role_action(self, body, domain_id, **kwargs):  # noqa: E501
+    def add_domain_role_action(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Adds a role action for a domain role.  # noqa: E501
 
         Adds a role action for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.add_domain_role_action(body, domain_id, async_req=True)
+        >>> thread = api.add_domain_role_action(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleActionsObj body: JSON- formatted object decsribing an action to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleActionsObj
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.add_domain_role_action_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            return self.add_domain_role_action_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.add_domain_role_action_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            (data) = self.add_domain_role_action_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def add_domain_role_action_with_http_info(self, body, domain_id, **kwargs):  # noqa: E501
+    def add_domain_role_action_with_http_info(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Adds a role action for a domain role.  # noqa: E501
 
         Adds a role action for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.add_domain_role_action_with_http_info(body, domain_id, async_req=True)
+        >>> thread = api.add_domain_role_action_with_http_info(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleActionsObj body: JSON- formatted object decsribing an action to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleActionsObj
                  If the method is called asynchronously,
                  returns the request thread.
@@ -97,16 +97,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `add_domain_role_action`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `add_domain_role_action`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -143,43 +147,43 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def add_domain_role_member(self, body, domain_id, **kwargs):  # noqa: E501
+    def add_domain_role_member(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Adds a member to a domain role.  # noqa: E501
 
         Adds a member to a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.add_domain_role_member(body, domain_id, async_req=True)
+        >>> thread = api.add_domain_role_member(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleMembersObj body: JSON- formatted object decsribing a member to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleMembersObj
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.add_domain_role_member_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            return self.add_domain_role_member_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.add_domain_role_member_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            (data) = self.add_domain_role_member_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def add_domain_role_member_with_http_info(self, body, domain_id, **kwargs):  # noqa: E501
+    def add_domain_role_member_with_http_info(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Adds a member to a domain role.  # noqa: E501
 
         Adds a member to a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.add_domain_role_member_with_http_info(body, domain_id, async_req=True)
+        >>> thread = api.add_domain_role_member_with_http_info(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleMembersObj body: JSON- formatted object decsribing a member to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleMembersObj
                  If the method is called asynchronously,
                  returns the request thread.
@@ -208,16 +212,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `add_domain_role_member`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `add_domain_role_member`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -361,41 +369,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def delete_all_domain_role_actions(self, domain_id, **kwargs):  # noqa: E501
+    def delete_all_domain_role_actions(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes all role actions for a domain role.  # noqa: E501
 
         Deletes all role actions for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_all_domain_role_actions(domain_id, async_req=True)
+        >>> thread = api.delete_all_domain_role_actions(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.delete_all_domain_role_actions_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.delete_all_domain_role_actions_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.delete_all_domain_role_actions_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.delete_all_domain_role_actions_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def delete_all_domain_role_actions_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def delete_all_domain_role_actions_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes all role actions for a domain role.  # noqa: E501
 
         Deletes all role actions for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_all_domain_role_actions_with_http_info(domain_id, async_req=True)
+        >>> thread = api.delete_all_domain_role_actions_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -420,16 +428,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `delete_all_domain_role_actions`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `delete_all_domain_role_actions`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -456,41 +468,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def delete_all_domain_role_members(self, domain_id, **kwargs):  # noqa: E501
+    def delete_all_domain_role_members(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes all members from a domain role.  # noqa: E501
 
         Deletes all members from a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_all_domain_role_members(domain_id, async_req=True)
+        >>> thread = api.delete_all_domain_role_members(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.delete_all_domain_role_members_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.delete_all_domain_role_members_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.delete_all_domain_role_members_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.delete_all_domain_role_members_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def delete_all_domain_role_members_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def delete_all_domain_role_members_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes all members from a domain role.  # noqa: E501
 
         Deletes all members from a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_all_domain_role_members_with_http_info(domain_id, async_req=True)
+        >>> thread = api.delete_all_domain_role_members_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -515,16 +527,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `delete_all_domain_role_members`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `delete_all_domain_role_members`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -551,41 +567,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def delete_domain_role(self, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes domain role.  # noqa: E501
 
         Deletes a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role(domain_id, async_req=True)
+        >>> thread = api.delete_domain_role(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.delete_domain_role_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.delete_domain_role_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.delete_domain_role_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.delete_domain_role_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def delete_domain_role_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes domain role.  # noqa: E501
 
         Deletes a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role_with_http_info(domain_id, async_req=True)
+        >>> thread = api.delete_domain_role_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -610,16 +626,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `delete_domain_role`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `delete_domain_role`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -646,43 +666,43 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def delete_domain_role_action(self, body, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role_action(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes role actions for a domain role.  # noqa: E501
 
         Deletes a role action for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role_action(body, domain_id, async_req=True)
+        >>> thread = api.delete_domain_role_action(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleActionsObj body: JSON- formatted object decsribing an action to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.delete_domain_role_action_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            return self.delete_domain_role_action_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.delete_domain_role_action_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            (data) = self.delete_domain_role_action_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def delete_domain_role_action_with_http_info(self, body, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role_action_with_http_info(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes role actions for a domain role.  # noqa: E501
 
         Deletes a role action for a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role_action_with_http_info(body, domain_id, async_req=True)
+        >>> thread = api.delete_domain_role_action_with_http_info(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleActionsObj body: JSON- formatted object decsribing an action to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -711,16 +731,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `delete_domain_role_action`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `delete_domain_role_action`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -753,43 +777,43 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def delete_domain_role_members(self, body, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role_members(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes members from a domain role.  # noqa: E501
 
         Deletes a member from a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role_members(body, domain_id, async_req=True)
+        >>> thread = api.delete_domain_role_members(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleMembersObj body: JSON- formatted object decsribing a member to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.delete_domain_role_members_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            return self.delete_domain_role_members_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.delete_domain_role_members_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            (data) = self.delete_domain_role_members_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def delete_domain_role_members_with_http_info(self, body, domain_id, **kwargs):  # noqa: E501
+    def delete_domain_role_members_with_http_info(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Deletes members from a domain role.  # noqa: E501
 
         Deletes a member from a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.delete_domain_role_members_with_http_info(body, domain_id, async_req=True)
+        >>> thread = api.delete_domain_role_members_with_http_info(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param RoleMembersObj body: JSON- formatted object decsribing a member to be added to a role. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -818,16 +842,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `delete_domain_role_members`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `delete_domain_role_members`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -955,41 +983,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def get_domain_role(self, domain_id, **kwargs):  # noqa: E501
+    def get_domain_role(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Retrieves domain role.  # noqa: E501
 
         Retrieves a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.get_domain_role(domain_id, async_req=True)
+        >>> thread = api.get_domain_role(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: Role
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.get_domain_role_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.get_domain_role_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.get_domain_role_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.get_domain_role_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def get_domain_role_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def get_domain_role_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Retrieves domain role.  # noqa: E501
 
         Retrieves a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.get_domain_role_with_http_info(domain_id, async_req=True)
+        >>> thread = api.get_domain_role_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: Role
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1014,16 +1042,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `get_domain_role`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `get_domain_role`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -1149,41 +1181,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def list_domain_role_actions(self, domain_id, **kwargs):  # noqa: E501
+    def list_domain_role_actions(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Lists domain role actions.  # noqa: E501
 
         Retrieves a list of domain role actions.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.list_domain_role_actions(domain_id, async_req=True)
+        >>> thread = api.list_domain_role_actions(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleActionsObj
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.list_domain_role_actions_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.list_domain_role_actions_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.list_domain_role_actions_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.list_domain_role_actions_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def list_domain_role_actions_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def list_domain_role_actions_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Lists domain role actions.  # noqa: E501
 
         Retrieves a list of domain role actions.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.list_domain_role_actions_with_http_info(domain_id, async_req=True)
+        >>> thread = api.list_domain_role_actions_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleActionsObj
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1208,16 +1240,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `list_domain_role_actions`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `list_domain_role_actions`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -1248,41 +1284,41 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def list_domain_role_members(self, domain_id, **kwargs):  # noqa: E501
+    def list_domain_role_members(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Lists domain role members.  # noqa: E501
 
         Retrieves a list of domain role members.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.list_domain_role_members(domain_id, async_req=True)
+        >>> thread = api.list_domain_role_members(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleMembersObj
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.list_domain_role_members_with_http_info(domain_id, **kwargs)  # noqa: E501
+            return self.list_domain_role_members_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.list_domain_role_members_with_http_info(domain_id, **kwargs)  # noqa: E501
+            (data) = self.list_domain_role_members_with_http_info(domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def list_domain_role_members_with_http_info(self, domain_id, **kwargs):  # noqa: E501
+    def list_domain_role_members_with_http_info(self, domain_id, role_id, **kwargs):  # noqa: E501
         """Lists domain role members.  # noqa: E501
 
         Retrieves a list of domain role members.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.list_domain_role_members_with_http_info(domain_id, async_req=True)
+        >>> thread = api.list_domain_role_members_with_http_info(domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: RoleMembersObj
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1307,16 +1343,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `list_domain_role_members`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `list_domain_role_members`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 
@@ -1450,43 +1490,43 @@ class RolesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def update_domain_role(self, body, domain_id, **kwargs):  # noqa: E501
+    def update_domain_role(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Updates domain role.  # noqa: E501
 
         Updates a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.update_domain_role(body, domain_id, async_req=True)
+        >>> thread = api.update_domain_role(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param UpdateRoleObj body: JSON- formatted object decsribing a role to be updated. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: Role
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.update_domain_role_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            return self.update_domain_role_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
         else:
-            (data) = self.update_domain_role_with_http_info(body, domain_id, **kwargs)  # noqa: E501
+            (data) = self.update_domain_role_with_http_info(body, domain_id, role_id, **kwargs)  # noqa: E501
             return data
 
-    def update_domain_role_with_http_info(self, body, domain_id, **kwargs):  # noqa: E501
+    def update_domain_role_with_http_info(self, body, domain_id, role_id, **kwargs):  # noqa: E501
         """Updates domain role.  # noqa: E501
 
         Updates a specific domain role that is identified by the role name.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.update_domain_role_with_http_info(body, domain_id, async_req=True)
+        >>> thread = api.update_domain_role_with_http_info(body, domain_id, role_id, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param UpdateRoleObj body: JSON- formatted object decsribing a role to be updated. (required)
         :param str domain_id: Unique domain identified. (required)
-        :param str role_id: List domains that the user has the given role ID on.
+        :param str role_id: Role ID. (required)
         :return: Role
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1515,16 +1555,20 @@ class RolesApi(object):
         if ('domain_id' not in params or
                 params['domain_id'] is None):
             raise ValueError("Missing the required parameter `domain_id` when calling `update_domain_role`")  # noqa: E501
+        # verify the required parameter 'role_id' is set
+        if ('role_id' not in params or
+                params['role_id'] is None):
+            raise ValueError("Missing the required parameter `role_id` when calling `update_domain_role`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
         if 'domain_id' in params:
             path_params['domainID'] = params['domain_id']  # noqa: E501
+        if 'role_id' in params:
+            path_params['roleID'] = params['role_id']  # noqa: E501
 
         query_params = []
-        if 'role_id' in params:
-            query_params.append(('role_id', params['role_id']))  # noqa: E501
 
         header_params = {}
 

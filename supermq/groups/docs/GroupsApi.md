@@ -477,9 +477,9 @@ name = 'name_example' # str | Group's name. (optional)
 root_group = false # bool | List groups without a parent group. (optional) (default to false)
 status = 'status_example' # str | Lists groups with the given status. (optional)
 id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups with the given ID. (optional)
-actions = 'actions_example' # str | Lists groups that the user has the given actions on. Multiple actions can be specified separated by comma. (optional)
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
-role_name = 'role_name_example' # str | List groups that the user has the given role name on. (optional)
+actions = 'actions_example' # str | Filter by actions. Multiple actions can be specified separated by comma. (optional)
+role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Filter by role ID. (optional)
+role_name = 'role_name_example' # str | Filter by role name. (optional)
 access_type = 'access_type_example' # str | Type of access the user has on the group. (optional)
 only_total = false # bool | If true, the response will contain only the total number of groups that match the query parameters. (optional) (default to false)
 
@@ -506,9 +506,9 @@ Name | Type | Description  | Notes
  **root_group** | **bool**| List groups without a parent group. | [optional] [default to false]
  **status** | **str**| Lists groups with the given status. | [optional] 
  **id** | [**str**](.md)| List groups with the given ID. | [optional] 
- **actions** | **str**| Lists groups that the user has the given actions on. Multiple actions can be specified separated by comma. | [optional] 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
- **role_name** | **str**| List groups that the user has the given role name on. | [optional] 
+ **actions** | **str**| Filter by actions. Multiple actions can be specified separated by comma. | [optional] 
+ **role_id** | [**str**](.md)| Filter by role ID. | [optional] 
+ **role_name** | **str**| Filter by role name. | [optional] 
  **access_type** | **str**| Type of access the user has on the group. | [optional] 
  **only_total** | **bool**| If true, the response will contain only the total number of groups that match the query parameters. | [optional] [default to false]
 

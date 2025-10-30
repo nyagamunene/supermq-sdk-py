@@ -281,9 +281,9 @@ dir = 'dir_example' # str | Direction of ordering the results. (optional)
 metadata = NULL # dict(str, object) | Metadata filter. Filtering is performed matching the parameter with metadata on top level. Parameter is json. (optional)
 status = 'enabled' # str | Domain status. (optional) (default to enabled)
 name = 'name_example' # str | Domain's name. (optional)
-actions = 'actions_example' # str | Lists domains that the user has the given actions on. Multiple actions can be specified separated by comma. (optional)
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
-role_name = 'role_name_example' # str | List domains that the user has the given role name on. (optional)
+actions = 'actions_example' # str | Filter by actions. Multiple actions can be specified separated by comma. (optional)
+role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Filter by role ID. (optional)
+role_name = 'role_name_example' # str | Filter by role name. (optional)
 access_type = 'access_type_example' # str | Type of access the user has on the domain. (optional)
 only_total = false # bool | If true, the response will contain only the total number of domains that match the query parameters. (optional) (default to false)
 
@@ -306,9 +306,9 @@ Name | Type | Description  | Notes
  **metadata** | [**dict(str, object)**](object.md)| Metadata filter. Filtering is performed matching the parameter with metadata on top level. Parameter is json. | [optional] 
  **status** | **str**| Domain status. | [optional] [default to enabled]
  **name** | **str**| Domain&#x27;s name. | [optional] 
- **actions** | **str**| Lists domains that the user has the given actions on. Multiple actions can be specified separated by comma. | [optional] 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
- **role_name** | **str**| List domains that the user has the given role name on. | [optional] 
+ **actions** | **str**| Filter by actions. Multiple actions can be specified separated by comma. | [optional] 
+ **role_id** | [**str**](.md)| Filter by role ID. | [optional] 
+ **role_name** | **str**| Filter by role name. | [optional] 
  **access_type** | **str**| Type of access the user has on the domain. | [optional] 
  **only_total** | **bool**| If true, the response will contain only the total number of domains that match the query parameters. | [optional] [default to false]
 

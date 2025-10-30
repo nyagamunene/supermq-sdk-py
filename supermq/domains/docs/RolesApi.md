@@ -21,7 +21,7 @@ Method | HTTP request | Description
 [**update_domain_role**](RolesApi.md#update_domain_role) | **PUT** /domains/{domainID}/roles/{roleID} | Updates domain role.
 
 # **add_domain_role_action**
-> RoleActionsObj add_domain_role_action(body, domain_id, role_id=role_id)
+> RoleActionsObj add_domain_role_action(body, domain_id, role_id)
 
 Adds a role action for a domain role.
 
@@ -40,11 +40,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleActionsObj() # RoleActionsObj | JSON- formatted object decsribing an action to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Adds a role action for a domain role.
-    api_response = api_instance.add_domain_role_action(body, domain_id, role_id=role_id)
+    api_response = api_instance.add_domain_role_action(body, domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->add_domain_role_action: %s\n" % e)
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**RoleActionsObj**](RoleActionsObj.md)| JSON- formatted object decsribing an action to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **add_domain_role_member**
-> RoleMembersObj add_domain_role_member(body, domain_id, role_id=role_id)
+> RoleMembersObj add_domain_role_member(body, domain_id, role_id)
 
 Adds a member to a domain role.
 
@@ -93,11 +93,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleMembersObj() # RoleMembersObj | JSON- formatted object decsribing a member to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Adds a member to a domain role.
-    api_response = api_instance.add_domain_role_member(body, domain_id, role_id=role_id)
+    api_response = api_instance.add_domain_role_member(body, domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->add_domain_role_member: %s\n" % e)
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**RoleMembersObj**](RoleMembersObj.md)| JSON- formatted object decsribing a member to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_all_domain_role_actions**
-> delete_all_domain_role_actions(domain_id, role_id=role_id)
+> delete_all_domain_role_actions(domain_id, role_id)
 
 Deletes all role actions for a domain role.
 
@@ -196,11 +196,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes all role actions for a domain role.
-    api_instance.delete_all_domain_role_actions(domain_id, role_id=role_id)
+    api_instance.delete_all_domain_role_actions(domain_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_all_domain_role_actions: %s\n" % e)
 ```
@@ -210,7 +210,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -228,7 +228,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_all_domain_role_members**
-> delete_all_domain_role_members(domain_id, role_id=role_id)
+> delete_all_domain_role_members(domain_id, role_id)
 
 Deletes all members from a domain role.
 
@@ -246,11 +246,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes all members from a domain role.
-    api_instance.delete_all_domain_role_members(domain_id, role_id=role_id)
+    api_instance.delete_all_domain_role_members(domain_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_all_domain_role_members: %s\n" % e)
 ```
@@ -260,7 +260,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -278,7 +278,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_domain_role**
-> delete_domain_role(domain_id, role_id=role_id)
+> delete_domain_role(domain_id, role_id)
 
 Deletes domain role.
 
@@ -296,11 +296,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes domain role.
-    api_instance.delete_domain_role(domain_id, role_id=role_id)
+    api_instance.delete_domain_role(domain_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_domain_role: %s\n" % e)
 ```
@@ -310,7 +310,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -328,7 +328,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_domain_role_action**
-> delete_domain_role_action(body, domain_id, role_id=role_id)
+> delete_domain_role_action(body, domain_id, role_id)
 
 Deletes role actions for a domain role.
 
@@ -347,11 +347,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleActionsObj() # RoleActionsObj | JSON- formatted object decsribing an action to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes role actions for a domain role.
-    api_instance.delete_domain_role_action(body, domain_id, role_id=role_id)
+    api_instance.delete_domain_role_action(body, domain_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_domain_role_action: %s\n" % e)
 ```
@@ -362,7 +362,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**RoleActionsObj**](RoleActionsObj.md)| JSON- formatted object decsribing an action to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -380,7 +380,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_domain_role_members**
-> delete_domain_role_members(body, domain_id, role_id=role_id)
+> delete_domain_role_members(body, domain_id, role_id)
 
 Deletes members from a domain role.
 
@@ -399,11 +399,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleMembersObj() # RoleMembersObj | JSON- formatted object decsribing a member to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes members from a domain role.
-    api_instance.delete_domain_role_members(body, domain_id, role_id=role_id)
+    api_instance.delete_domain_role_members(body, domain_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_domain_role_members: %s\n" % e)
 ```
@@ -414,7 +414,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**RoleMembersObj**](RoleMembersObj.md)| JSON- formatted object decsribing a member to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -481,7 +481,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_domain_role**
-> Role get_domain_role(domain_id, role_id=role_id)
+> Role get_domain_role(domain_id, role_id)
 
 Retrieves domain role.
 
@@ -499,11 +499,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Retrieves domain role.
-    api_response = api_instance.get_domain_role(domain_id, role_id=role_id)
+    api_response = api_instance.get_domain_role(domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->get_domain_role: %s\n" % e)
@@ -514,7 +514,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -581,7 +581,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_domain_role_actions**
-> RoleActionsObj list_domain_role_actions(domain_id, role_id=role_id)
+> RoleActionsObj list_domain_role_actions(domain_id, role_id)
 
 Lists domain role actions.
 
@@ -599,11 +599,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Lists domain role actions.
-    api_response = api_instance.list_domain_role_actions(domain_id, role_id=role_id)
+    api_response = api_instance.list_domain_role_actions(domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->list_domain_role_actions: %s\n" % e)
@@ -614,7 +614,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -632,7 +632,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_domain_role_members**
-> RoleMembersObj list_domain_role_members(domain_id, role_id=role_id)
+> RoleMembersObj list_domain_role_members(domain_id, role_id)
 
 Lists domain role members.
 
@@ -650,11 +650,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Lists domain role members.
-    api_response = api_instance.list_domain_role_members(domain_id, role_id=role_id)
+    api_response = api_instance.list_domain_role_members(domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->list_domain_role_members: %s\n" % e)
@@ -665,7 +665,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -736,7 +736,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_domain_role**
-> Role update_domain_role(body, domain_id, role_id=role_id)
+> Role update_domain_role(body, domain_id, role_id)
 
 Updates domain role.
 
@@ -755,11 +755,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.UpdateRoleObj() # UpdateRoleObj | JSON- formatted object decsribing a role to be updated.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identified.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List domains that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Updates domain role.
-    api_response = api_instance.update_domain_role(body, domain_id, role_id=role_id)
+    api_response = api_instance.update_domain_role(body, domain_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->update_domain_role: %s\n" % e)
@@ -771,7 +771,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**UpdateRoleObj**](UpdateRoleObj.md)| JSON- formatted object decsribing a role to be updated. | 
  **domain_id** | [**str**](.md)| Unique domain identified. | 
- **role_id** | [**str**](.md)| List domains that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 

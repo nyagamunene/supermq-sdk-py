@@ -677,9 +677,9 @@ class ChannelsApi(object):
         :param str status: Client account status.
         :param str name: Channel's name.
         :param str id: List channels with the given ID.
-        :param str actions: Lists channels that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List channels that the user has the given role ID on.
-        :param str role_name: List channels that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the channel.
         :param bool only_total: If true, the response will contain only the total number of channels that match the query parameters.
         :param str client: If provided lists channels that a client with the provided ID is connected to.
@@ -715,9 +715,9 @@ class ChannelsApi(object):
         :param str status: Client account status.
         :param str name: Channel's name.
         :param str id: List channels with the given ID.
-        :param str actions: Lists channels that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List channels that the user has the given role ID on.
-        :param str role_name: List channels that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the channel.
         :param bool only_total: If true, the response will contain only the total number of channels that match the query parameters.
         :param str client: If provided lists channels that a client with the provided ID is connected to.

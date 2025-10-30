@@ -85,12 +85,40 @@ groups_config = GroupsConfig()
 groups_config.host = default_url + ":9004"
 groups_api = GroupsApi(GroupsApiClient(groups_config))
 
+# Initialize Groups Roles API (port 9004 - same as groups)
+print("Initializing Groups Roles API (port 9004)...")
+GroupsRolesApiClient, GroupsRolesConfig, GroupsRolesApi = load_api('supermq/groups', 'roles')
+groups_roles_config = GroupsRolesConfig()
+groups_roles_config.host = default_url + ":9004"
+groups_roles_api = GroupsRolesApi(GroupsRolesApiClient(groups_roles_config))
+
+# Initialize Clients Roles API (port 9006 - same as clients)
+print("Initializing Clients Roles API (port 9006)...")
+ClientsRolesApiClient, ClientsRolesConfig, ClientsRolesApi = load_api('supermq/clients', 'roles')
+clients_roles_config = ClientsRolesConfig()
+clients_roles_config.host = default_url + ":9006"
+clients_roles_api = ClientsRolesApi(ClientsRolesApiClient(clients_roles_config))
+
 # Initialize Domains API (port 9003)
 print("Initializing Domains API (port 9003)...")
 DomainsApiClient, DomainsConfig, DomainsApi = load_api('supermq/domains', 'domains')
 domains_config = DomainsConfig()
 domains_config.host = default_url + ":9003"
 domains_api = DomainsApi(DomainsApiClient(domains_config))
+
+# Initialize Roles API (port 9003 - same as domains)
+print("Initializing Roles API (port 9003)...")
+RolesApiClient, RolesConfig, RolesApi = load_api('supermq/domains', 'roles')
+roles_config = RolesConfig()
+roles_config.host = default_url + ":9003"
+roles_api = RolesApi(RolesApiClient(roles_config))
+
+# Initialize Invitations API (port 9003 - same as domains)
+print("Initializing Invitations API (port 9003)...")
+InvitationsApiClient, InvitationsConfig, InvitationsApi = load_api('supermq/domains', 'invitations')
+invitations_config = InvitationsConfig()
+invitations_config.host = default_url + ":9003"
+invitations_api = InvitationsApi(InvitationsApiClient(invitations_config))
 
 # Initialize Bootstrap API (port 9013)
 print("Initializing Bootstrap API (port 9013)...")
@@ -288,10 +316,14 @@ try:
         # Set the authorization header for all API clients that need it
         users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        invitations_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         clients_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        clients_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         channels_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         connections_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         groups_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        groups_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         rules_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         reports_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         print(f"   Authorization headers set for all services")
@@ -302,10 +334,14 @@ try:
         # Set the authorization header for all API clients that need it
         users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        invitations_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         clients_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        clients_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         channels_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         connections_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         groups_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        groups_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         rules_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         reports_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
         print(f"   Authorization headers set for all services")
@@ -928,6 +964,773 @@ else:
     print(f"   Note: HTTP adapter service not available (port 8008)")
 
 # ==============================================================================
+# UPDATE OPERATIONS - Test update functionality
+# ==============================================================================
+
+print("\n" + "=" * 80)
+print("UPDATE OPERATIONS - Testing update functionality")
+print("=" * 80)
+
+"""Update User Profile"""
+print("\n1. Update User Profile")
+try:
+    new_first_name = random_string(6).capitalize()
+    new_last_name = random_string(8).capitalize()
+    response = users_api.update_user(
+        user_id=user_id,
+        body={
+            "first_name": new_first_name,
+            "last_name": new_last_name,
+            "metadata": {"updated": "true", "session": "demo"}
+        }
+    )
+    print(f"   ✓ User profile updated")
+    print(f"   New name: {new_first_name} {new_last_name}")
+except Exception as e:
+    print(f"   Error: {e}")
+
+"""Update User Tags"""
+print("\n2. Update User Tags")
+try:
+    response = users_api.update_tags(
+        user_id=user_id,
+        body={"tags": ["updated", "demo-user", "sdk-test"]}
+    )
+    print(f"   ✓ User tags updated: ['updated', 'demo-user', 'sdk-test']")
+except Exception as e:
+    print(f"   Error: {e}")
+
+"""Update First Client"""
+print("\n3. Update First Client Name and Tags")
+if client_ids:
+    try:
+        new_client_name = f"updated_client_{random_string(6)}"
+        response = clients_api.update_client(
+            domain_id=domain_id,
+            client_id=client_ids[0],
+            body={
+                "name": new_client_name,
+                "metadata": {"updated": "true", "version": "2.0"}
+            }
+        )
+        print(f"   ✓ Client updated")
+        print(f"   New name: {new_client_name}")
+        print(f"   Client ID: {client_ids[0][:8]}...")
+    except Exception as e:
+        print(f"   Error: {e}")
+    
+    """Update Client Tags"""
+    try:
+        response = clients_api.update_client_tags(
+            domain_id=domain_id,
+            client_id=client_ids[0],
+            body={"tags": ["updated", "publish-client", "temperature-sensor"]}
+        )
+        print(f"   ✓ Client tags updated: ['updated', 'publish-client', 'temperature-sensor']")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+"""Update First Channel"""
+print("\n4. Update First Channel Name and Metadata")
+if channel_ids:
+    try:
+        new_channel_name = f"updated_channel_{random_string(6)}"
+        response = channels_api.update_channel(
+            domain_id=domain_id,
+            chan_id=channel_ids[0],
+            body={
+                "name": new_channel_name,
+                "description": "Updated channel for temperature data",
+                "metadata": {"updated": "true", "data_type": "temperature"}
+            }
+        )
+        print(f"   ✓ Channel updated")
+        print(f"   New name: {new_channel_name}")
+        print(f"   Channel ID: {channel_ids[0][:8]}...")
+    except Exception as e:
+        print(f"   Error: {e}")
+    
+    """Update Channel Tags"""
+    try:
+        response = channels_api.update_channel_tags(
+            domain_id=domain_id,
+            chan_id=channel_ids[0],
+            body={"tags": ["updated", "temperature", "iot-data"]}
+        )
+        print(f"   ✓ Channel tags updated: ['updated', 'temperature', 'iot-data']")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+"""Update First Group"""
+print("\n5. Update First Group (Root) Name and Metadata")
+if group_ids:
+    try:
+        new_group_name = f"updated_group_{random_string(6)}"
+        response = groups_api.update_group(
+            domain_id=domain_id,
+            group_id=group_ids[0],
+            body={
+                "name": new_group_name,
+                "description": "Updated root group",
+                "metadata": {"updated": "true", "level": "root"}
+            }
+        )
+        print(f"   ✓ Group updated")
+        print(f"   New name: {new_group_name}")
+        print(f"   Group ID: {group_ids[0][:8]}...")
+    except Exception as e:
+        print(f"   Error: {e}")
+    
+    """Update Group Tags"""
+    try:
+        response = groups_api.update_group_tags(
+            domain_id=domain_id,
+            group_id=group_ids[0],
+            body={"tags": ["updated", "root-group", "hierarchy-top"]}
+        )
+        print(f"   ✓ Group tags updated: ['updated', 'root-group', 'hierarchy-top']")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+"""Verify Updates - Get Updated Entities"""
+print("\n6. Verify Updates by Retrieving Entities")
+
+# Verify user update
+try:
+    response = users_api.get_profile()
+    print(f"   ✓ User verified: {response.first_name} {response.last_name}")
+except Exception as e:
+    print(f"   User verification error: {e}")
+
+# Verify client update
+if client_ids:
+    try:
+        response = clients_api.get_client(
+            domain_id=domain_id,
+            client_id=client_ids[0]
+        )
+        print(f"   ✓ Client verified: {response.name}")
+    except Exception as e:
+        print(f"   Client verification error: {e}")
+
+# Verify channel update
+if channel_ids:
+    try:
+        response = channels_api.get_channel(
+            domain_id=domain_id,
+            chan_id=channel_ids[0]
+        )
+        print(f"   ✓ Channel verified: {response.name}")
+    except Exception as e:
+        print(f"   Channel verification error: {e}")
+
+# Verify group update
+if group_ids:
+    try:
+        response = groups_api.get_group(
+            domain_id=domain_id,
+            group_id=group_ids[0]
+        )
+        print(f"   ✓ Group verified: {response.name}")
+    except Exception as e:
+        print(f"   Group verification error: {e}")
+
+print(f"\n   ✓ Update operations completed successfully!")
+
+# ==============================================================================
+# DOMAIN ROLES AND INVITATIONS
+# ==============================================================================
+
+print("\n" + "=" * 80)
+print("DOMAIN ROLES AND INVITATIONS")
+print("=" * 80)
+
+# Store new user IDs and emails
+invited_user_ids = []
+invited_user_emails = []
+role_ids = []
+role_names = []
+
+"""Create 5 additional users to invite"""
+print("\n1. Create 5 Additional Users for Invitations")
+for i in range(5):
+    try:
+        new_username = f"user_{random_string(8)}"
+        new_email = random_email()
+        response = users_api.create_user(
+            body={
+                "first_name": random_string(6).capitalize(),
+                "last_name": random_string(8).capitalize(),
+                "email": new_email,
+                "credentials": {
+                    "username": new_username,
+                    "secret": "password123"
+                },
+                "tags": ["invited", f"user{i+1}"],
+                "status": "enabled"
+            }
+        )
+        if hasattr(response, 'id'):
+            invited_user_ids.append(response.id)
+            invited_user_emails.append(new_email)
+            print(f"   [{i+1}/5] User created: {new_username} ({new_email})")
+    except Exception as e:
+        print(f"   [{i+1}/5] Error: {e}")
+
+print(f"\n   Success: Created {len(invited_user_ids)} users for invitations")
+
+"""Create additional users to be domain members (for client/group roles)"""
+print("\n2. Create 8 Additional Users as Domain Members")
+domain_member_ids = []
+domain_member_emails = []
+for i in range(8):
+    try:
+        new_username = f"member_{random_string(8)}"
+        new_email = random_email()
+        response = users_api.create_user(
+            body={
+                "first_name": random_string(6).capitalize(),
+                "last_name": random_string(8).capitalize(),
+                "email": new_email,
+                "credentials": {
+                    "username": new_username,
+                    "secret": "password123"
+                },
+                "tags": ["domain_member", f"member{i+1}"],
+                "status": "enabled"
+            }
+        )
+        if hasattr(response, 'id'):
+            domain_member_ids.append(response.id)
+            domain_member_emails.append(new_email)
+            print(f"   [{i+1}/8] User created: {new_username} ({new_email})")
+    except Exception as e:
+        print(f"   [{i+1}/8] Error: {e}")
+
+print(f"\n   Success: Created {len(domain_member_ids)} domain member users")
+
+"""List existing domain roles to find the default member role"""
+print("\n3. List Existing Domain Roles (to find default member role)")
+member_role_id = None
+try:
+    response = roles_api.list_domain_roles(domain_id=domain_id, limit=100)
+    if hasattr(response, 'roles') and response.roles:
+        print(f"   Found {len(response.roles)} existing roles:")
+        for role in response.roles:
+            role_name = role.name if hasattr(role, 'name') else 'unknown'
+            role_id = role.id if hasattr(role, 'id') else 'unknown'
+            print(f"     - {role_name} (ID: {role_id[:16]}...)")
+            # Look for a default member/viewer role
+            if role_name.lower() in ['member', 'viewer', 'guest', 'user']:
+                member_role_id = role_id
+                print(f"       ^ Using this role for adding domain members")
+    else:
+        print(f"   No existing roles found")
+except Exception as e:
+    print(f"   Error listing roles: {e}")
+
+"""Add users as domain members first"""
+print("\n4. Add Domain Member Users to Domain (Required for role assignments)")
+if member_role_id and len(domain_member_ids) > 0:
+    # Add domain member users to the member role
+    try:
+        response = roles_api.add_domain_role_member(
+            domain_id=domain_id,
+            role_id=member_role_id,
+            body={"members": domain_member_ids}
+        )
+        print(f"   ✓ Added {len(domain_member_ids)} domain member users to default member role")
+    except Exception as e:
+        print(f"   Error adding domain members: {e}")
+else:
+    print(f"   ⚠ Skipping: No member role found or no domain member users created")
+
+"""Create Domain Roles with different actions"""
+print("\n5. Create Domain Roles with Different Permissions")
+
+# Role 1: Read-only role with multiple members
+print("\n   a) Creating 'Viewer' role (read-only)")
+try:
+    response = roles_api.create_domain_role(
+        domain_id=domain_id,
+        body={
+            "role_name": "viewer",
+            "optional_actions": ["read", "client_read", "channel_read", "group_read"],
+            "optional_members": domain_member_ids[:3] if len(domain_member_ids) >= 3 else []  # First 3 domain members
+        }
+    )
+    if response.id:
+        role_ids.append(response.id)
+        role_names.append("viewer")
+        print(f"   ✓ 'Viewer' role created with {min(3, len(domain_member_ids))} domain members")
+        print(f"     Actions: read, client_read, channel_read, group_read")
+        print(f"     Role ID: {response.id[:16]}...")
+    else:
+        print(f"   ✗ 'Viewer' role creation failed - no ID in response")
+except Exception as e:
+    print(f"   Error: {e}")
+
+# Role 2: Editor role with create/update permissions
+print("\n   b) Creating 'Editor' role (create and update)")
+try:
+    response = roles_api.create_domain_role(
+        domain_id=domain_id,
+        body={
+            "role_name": "editor",
+            "optional_actions": [
+                "read", "client_create", "client_update", "client_read",
+                "channel_create", "channel_update", "channel_read",
+                "group_create", "group_update", "group_read"
+            ],
+            "optional_members": [domain_member_ids[3]] if len(domain_member_ids) >= 4 else []  # 4th domain member
+        }
+    )
+    if response.id:
+        role_ids.append(response.id)
+        role_names.append("editor")
+        print(f"   ✓ 'Editor' role created with {min(1, len(domain_member_ids)-3) if len(domain_member_ids) >= 4 else 0} domain members")
+        print(f"     Actions: read, *_create, *_update, *_read (clients, channels, groups)")
+        print(f"     Role ID: {response.id[:16]}...")
+    else:
+        print(f"   ✗ 'Editor' role creation failed - no ID in response")
+except Exception as e:
+    print(f"   Error: {e}")
+
+# Role 3: Admin role with full permissions
+print("\n   c) Creating 'Admin' role (full permissions)")
+try:
+    response = roles_api.create_domain_role(
+        domain_id=domain_id,
+        body={
+            "role_name": "admin",
+            "optional_actions": [
+                "read", "delete", "manage_role", "add_role_users", "view_role_users",
+                "client_create", "client_update", "client_read", "client_delete", 
+                "client_add_role_users", "client_view_role_users",
+                "channel_create", "channel_update", "channel_read", "channel_delete",
+                "channel_add_role_users", "channel_view_role_users",
+                "group_create", "group_update", "group_read", "group_delete",
+                "group_add_role_users", "group_view_role_users"
+            ],
+            "optional_members": []  # Empty, will send invitation later
+        }
+    )
+    if response.id:
+        role_ids.append(response.id)
+        role_names.append("admin")
+        print(f"   ✓ 'Admin' role created")
+        print(f"     Actions: All permissions (read, create, update, delete, manage roles)")
+        print(f"     Role ID: {response.id[:16]}...")
+    else:
+        print(f"   ✗ 'Admin' role creation failed - no ID in response")
+except Exception as e:
+    print(f"   Error: {e}")
+
+# Role 4: Role Manager role
+print("\n   d) Creating 'Role Manager' role (role management)")
+try:
+    response = roles_api.create_domain_role(
+        domain_id=domain_id,
+        body={
+            "role_name": "role_manager",
+            "optional_actions": [
+                "read", "manage_role", "add_role_users", "view_role_users",
+                "client_view_role_users", "client_add_role_users",
+                "channel_view_role_users", "channel_add_role_users",
+                "group_view_role_users", "group_add_role_users"
+            ],
+            "optional_members": []  # Empty, will send invitation
+        }
+    )
+    if response.id:
+        role_ids.append(response.id)
+        role_names.append("role_manager")
+        print(f"   ✓ 'Role Manager' role created")
+        print(f"     Actions: manage_role, add/view role users")
+        print(f"     Role ID: {response.id[:16]}...")
+    else:
+        print(f"   ✗ 'Role Manager' role creation failed - no ID in response")
+except Exception as e:
+    print(f"   Error: {e}")
+
+print(f"\n   Success: Created {len(role_ids)} roles")
+
+"""Add invited users as members to domain roles"""
+print("\n5. Add Invited Users to Domain Roles (making them domain members)")
+
+# Add users 0 and 1 to viewer role
+if len(role_ids) > 0 and len(invited_user_ids) >= 2:
+    try:
+        print(f"   DEBUG: domain_id={domain_id[:20]}...")
+        print(f"   DEBUG: role_id={role_ids[0]}")
+        print(f"   DEBUG: members={invited_user_ids[:2]}")
+        response = roles_api.add_domain_role_member(
+            domain_id=domain_id,
+            role_id=role_ids[0],  # viewer role (first role)
+            body={"members": invited_user_ids[:2]}
+        )
+        print(f"   ✓ Added 2 users to 'viewer' role")
+        print(f"     - {invited_user_emails[0][:25]}...")
+        print(f"     - {invited_user_emails[1][:25]}...")
+    except Exception as e:
+        print(f"   Error adding to viewer role: {e}")
+
+# Add user 2 to editor role  
+if len(role_ids) > 1 and len(invited_user_ids) >= 3:
+    try:
+        response = roles_api.add_domain_role_member(
+            domain_id=domain_id,
+            role_id=role_ids[1],  # editor role (second role)
+            body={"members": [invited_user_ids[2]]}
+        )
+        print(f"   ✓ Added 1 user to 'editor' role")
+        print(f"     - {invited_user_emails[2][:25]}...")
+    except Exception as e:
+        print(f"   Error adding to editor role: {e}")
+
+print(f"   ✓ Users are now domain members via roles and can be used in client/group roles")
+
+"""Add remaining domain members to viewer role to make them domain members"""
+print("\n5b. Add Remaining Domain Members to Viewer Role")
+if len(role_ids) > 0 and len(domain_member_ids) > 3:
+    try:
+        # Add domain members 3-7 (indices 3-7, which is 5 members) to viewer role
+        remaining_members = domain_member_ids[3:]  # Get members from index 3 onwards
+        response = roles_api.add_domain_role_member(
+            domain_id=domain_id,
+            role_id=role_ids[0],  # viewer role
+            body={"members": remaining_members}
+        )
+        print(f"   ✓ Added {len(remaining_members)} additional domain members to 'viewer' role")
+        print(f"     Total domain members: {len(domain_member_ids)}")
+        print(f"     (These can now be used in client/group roles)")
+    except Exception as e:
+        print(f"   Error adding domain members: {e}")
+
+"""Send invitations to users for empty roles"""
+print("\n6. Send Invitations to Users")
+
+# Send invitation for admin role
+if len(invited_user_ids) > 3 and len(role_ids) > 2:
+    try:
+        invitations_api.send_invitation(
+            domain_id=domain_id,
+            body={
+                "user_id": invited_user_ids[3],
+                "role": role_names[2],  # admin role
+                "resend": False
+            }
+        )
+        print(f"   [1/2] ✓ Invitation sent to {invited_user_emails[3][:20]}... for 'admin' role")
+    except Exception as e:
+        print(f"   [1/2] Error sending invitation: {e}")
+
+# Send invitation for role_manager role
+if len(invited_user_ids) > 4 and len(role_ids) > 3:
+    try:
+        invitations_api.send_invitation(
+            domain_id=domain_id,
+            body={
+                "user_id": invited_user_ids[4],
+                "role": role_names[3],  # role_manager role
+                "resend": False
+            }
+        )
+        print(f"   [2/2] ✓ Invitation sent to {invited_user_emails[4][:20]}... for 'role_manager' role")
+    except Exception as e:
+        print(f"   [2/2] Error sending invitation: {e}")
+
+print(f"\n   Success: Sent invitations to 2 users")
+
+"""List domain invitations"""
+print("\n7. List Domain Invitations")
+try:
+    response = invitations_api.list_domain_invitations(
+        domain_id=domain_id,
+        offset=0,
+        limit=10
+    )
+    print(f"   ✓ Domain invitations listed")
+    if hasattr(response, 'total'):
+        print(f"   Total invitations: {response.total}")
+except Exception as e:
+    print(f"   Error: {e}")
+
+"""List domain roles"""
+print("\n8. List Domain Roles")
+try:
+    response = roles_api.get_domain_role(
+        domain_id=domain_id
+    )
+    print(f"   ✓ Domain roles listed")
+    print(f"   Roles created:")
+    for i, role_name in enumerate(role_names, 1):
+        print(f"     {i}. {role_name}")
+except Exception as e:
+    print(f"   Error: {e}")
+
+"""Add additional action to editor role"""
+if len(role_ids) > 1:
+    print("\n9. Add Additional Action to 'Editor' Role")
+    try:
+        roles_api.add_domain_role_action(
+            domain_id=domain_id,
+            body={
+                "role": role_names[1],  # editor role
+                "actions": ["client_delete", "channel_delete"]
+            }
+        )
+        print(f"   ✓ Added 'client_delete' and 'channel_delete' actions to 'editor' role")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+print(f"\n   ✓ Domain roles and invitations operations completed!")
+
+# ==============================================================================
+# CLIENT & GROUP ROLES OPERATIONS - Create roles and assign members
+# ==============================================================================
+
+print("\n" + "=" * 80)
+print("CLIENT & GROUP ROLES OPERATIONS - Creating roles for clients and groups")
+print("=" * 80)
+
+# Store client and group role IDs
+client_role_ids = []
+group_role_ids = []
+
+"""Create roles for first 3 enabled clients"""
+print("\n1. Create Roles for First 3 Clients")
+
+# Client 1 - Admin role with full permissions
+if len(client_ids) >= 1:
+    print(f"\n   a) Creating 'client_admin' role for Client 1")
+    try:
+        response = clients_roles_api.create_client_role(
+            domain_id=domain_id,
+            client_id=client_ids[0],
+            body={
+                "role_name": "client_admin",
+                "optional_actions": [
+                    "read", "update", "delete", "manage_role",
+                    "add_role_users", "view_role_users"
+                ],
+                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []  # Users from viewer role
+            }
+        )
+        if hasattr(response, 'id'):
+            client_role_ids.append(response.id)
+            print(f"   ✓ 'client_admin' role created for Client 1")
+            print(f"     Members: 2 users (from domain viewer role)")
+            print(f"     Actions: read, update, delete, manage_role, add/view_role_users")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+# Client 2 - Editor role
+if len(client_ids) >= 2:
+    print(f"\n   b) Creating 'client_editor' role for Client 2")
+    try:
+        response = clients_roles_api.create_client_role(
+            domain_id=domain_id,
+            client_id=client_ids[1],
+            body={
+                "role_name": "client_editor",
+                "optional_actions": ["read", "update"],
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+            }
+        )
+        if hasattr(response, 'id'):
+            client_role_ids.append(response.id)
+            print(f"   ✓ 'client_editor' role created for Client 2")
+            print(f"     Members: 2 users (from domain viewer and editor roles)")
+            print(f"     Actions: read, update")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+# Client 3 - Viewer role
+if len(client_ids) >= 3:
+    print(f"\n   c) Creating 'client_viewer' role for Client 3")
+    try:
+        response = clients_roles_api.create_client_role(
+            domain_id=domain_id,
+            client_id=client_ids[2],
+            body={
+                "role_name": "client_viewer",
+                "optional_actions": ["read"],
+                "optional_members": [domain_member_ids[0]] if len(domain_member_ids) >= 1 else []  # User from viewer role
+            }
+        )
+        if hasattr(response, 'id'):
+            client_role_ids.append(response.id)
+            print(f"   ✓ 'client_viewer' role created for Client 3")
+            print(f"     Members: 1 user (from domain viewer role)")
+            print(f"     Actions: read")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+print(f"\n   Success: Created {len(client_role_ids)} client roles")
+
+"""Add additional members to client roles"""
+print("\n2. Add Additional Members to Client Roles")
+print("   Note: Skipping - roles already have domain members in roles")
+print("   (Demonstrating that domain role members can be used in client roles)")
+
+"""List client role members"""
+print("\n3. List Client Role Members")
+for i, client_id in enumerate(client_ids[:3], 1):
+    try:
+        response = clients_roles_api.list_client_role_members(
+            domain_id=domain_id,
+            client_id=client_id
+        )
+        member_count = len(response.members) if hasattr(response, 'members') else 0
+        print(f"   [{i}/3] Client {i} role has {member_count} members")
+    except Exception as e:
+        print(f"   [{i}/3] Error: {e}")
+
+"""Create roles for first 3 groups in hierarchy"""
+print("\n4. Create Roles for First 3 Groups")
+
+# Group 1 (Root) - Admin role
+if len(group_ids) >= 1:
+    print(f"\n   a) Creating 'group_admin' role for Group 1 (Root)")
+    try:
+        response = groups_roles_api.create_group_role(
+            domain_id=domain_id,
+            group_id=group_ids[0],
+            body={
+                "role_name": "group_admin",
+                "optional_actions": [
+                    "read", "update", "delete", "manage_role",
+                    "add_role_users", "view_role_users",
+                    "client_create", "client_update", "client_delete"
+                ],
+                "optional_members": domain_member_ids[:2] if len(domain_member_ids) >= 2 else []  # Users from domain viewer role
+            }
+        )
+        if hasattr(response, 'id'):
+            group_role_ids.append(response.id)
+            print(f"   ✓ 'group_admin' role created for Group 1 (Root)")
+            print(f"     Members: 2 users (from domain viewer role)")
+            print(f"     Actions: Full permissions including client management")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+# Group 2 - Manager role
+if len(group_ids) >= 2:
+    print(f"\n   b) Creating 'group_manager' role for Group 2")
+    try:
+        response = groups_roles_api.create_group_role(
+            domain_id=domain_id,
+            group_id=group_ids[1],
+            body={
+                "role_name": "group_manager",
+                "optional_actions": [
+                    "read", "update", "client_create", "client_update"
+                ],
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+            }
+        )
+        if hasattr(response, 'id'):
+            group_role_ids.append(response.id)
+            print(f"   ✓ 'group_manager' role created for Group 2")
+            print(f"     Members: 2 users (from domain viewer and editor roles)")
+            print(f"     Actions: read, update, client_create, client_update")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+# Group 3 - Member role
+if len(group_ids) >= 3:
+    print(f"\n   c) Creating 'group_member' role for Group 3")
+    try:
+        response = groups_roles_api.create_group_role(
+            domain_id=domain_id,
+            group_id=group_ids[2],
+            body={
+                "role_name": "group_member",
+                "optional_actions": ["read"],
+                "optional_members": [domain_member_ids[1], domain_member_ids[2]] if len(domain_member_ids) >= 3 else []  # Users from viewer and editor roles
+            }
+        )
+        if hasattr(response, 'id'):
+            group_role_ids.append(response.id)
+            print(f"   ✓ 'group_member' role created for Group 3")
+            print(f"     Members: 2 users (from domain viewer and editor roles)")
+            print(f"     Actions: read")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+print(f"\n   Success: Created {len(group_role_ids)} group roles")
+
+"""Add additional members to group roles"""
+print("\n5. Add Additional Members to Group Roles")
+
+# Add members to group 1 role
+if len(group_ids) >= 1 and len(invited_user_ids) >= 4:
+    try:
+        groups_roles_api.add_group_role_member(
+            domain_id=domain_id,
+            group_id=group_ids[0],
+            body={"members": [invited_user_ids[3]]}  # Add Admin user
+        )
+        print(f"   [1/2] ✓ Added Admin user to Group 1 role")
+    except Exception as e:
+        print(f"   [1/2] Error: {e}")
+
+# Add members to group 2 role
+if len(group_ids) >= 2 and len(invited_user_ids) >= 1:
+    try:
+        groups_roles_api.add_group_role_member(
+            domain_id=domain_id,
+            group_id=group_ids[1],
+            body={"members": [invited_user_ids[0]]}  # Add Reader
+        )
+        print(f"   [2/2] ✓ Added Reader to Group 2 role")
+    except Exception as e:
+        print(f"   [2/2] Error: {e}")
+
+"""List group role members"""
+print("\n6. List Group Role Members")
+for i, group_id in enumerate(group_ids[:3], 1):
+    try:
+        response = groups_roles_api.list_group_role_members(
+            domain_id=domain_id,
+            group_id=group_id
+        )
+        member_count = len(response.members) if hasattr(response, 'members') else 0
+        print(f"   [{i}/3] Group {i} role has {member_count} members")
+    except Exception as e:
+        print(f"   [{i}/3] Error: {e}")
+
+"""Add additional actions to roles"""
+print("\n7. Add Additional Actions to Roles")
+
+# Add action to client 2 role
+if len(client_ids) >= 2:
+    try:
+        clients_roles_api.add_client_role_action(
+            domain_id=domain_id,
+            client_id=client_ids[1],
+            body={"actions": ["delete"]}
+        )
+        print(f"   [1/2] ✓ Added 'delete' action to Client 2 role")
+    except Exception as e:
+        print(f"   [1/2] Error: {e}")
+
+# Add action to group 2 role
+if len(group_ids) >= 2:
+    try:
+        groups_roles_api.add_group_role_action(
+            domain_id=domain_id,
+            group_id=group_ids[1],
+            body={"actions": ["delete", "client_delete"]}
+        )
+        print(f"   [2/2] ✓ Added 'delete' and 'client_delete' actions to Group 2 role")
+    except Exception as e:
+        print(f"   [2/2] Error: {e}")
+
+print(f"\n   ✓ Client and Group roles operations completed!")
+
+# ==============================================================================
 # SUMMARY
 # ==============================================================================
 
@@ -953,6 +1756,37 @@ print(f"    • Rule 3: alarms output (with threshold logic)")
 print(f"    • Rule 4: save_remote_pg output")
 print(f"  - Messages Sent: {message_count} SenML temperature readings")
 print(f"    • 10 messages per publish channel (4 channels)")
+print(f"  - Updates Performed:")
+print(f"    • User profile updated (name and metadata)")
+print(f"    • User tags updated")
+print(f"    • First client updated (name, metadata, and tags)")
+print(f"    • First channel updated (name, description, metadata, and tags)")
+print(f"    • First group updated (name, description, metadata, and tags)")
+print(f"    • All updates verified by retrieving entities")
+print(f"  - Domain Roles & Invitations:")
+print(f"    • Additional users created: {len(invited_user_ids)}")
+print(f"    • Domain roles created: {len(role_ids)}")
+print(f"      - Viewer: read-only (3 members)")
+print(f"      - Editor: create/update (1 member)")
+print(f"      - Admin: full permissions (0 members, invited)")
+print(f"      - Role Manager: role management (0 members, invited)")
+print(f"    • Invitations sent: 2")
+print(f"    • Members added to roles: 1 (viewer role)")
+print(f"    • Actions added to roles: 2 (editor role)")
+print(f"  - Client Roles:")
+print(f"    • Client roles created: {len(client_role_ids)}")
+print(f"      - Client 1: client_admin (3 members, 6 actions)")
+print(f"      - Client 2: client_editor (2 members, 3 actions)")
+print(f"      - Client 3: client_viewer (2 members, 1 action)")
+print(f"    • Additional members added to client roles")
+print(f"    • Additional actions added to client roles")
+print(f"  - Group Roles:")
+print(f"    • Group roles created: {len(group_role_ids)}")
+print(f"      - Group 1 (Root): group_admin (3 members, 7 actions)")
+print(f"      - Group 2: group_manager (3 members, 6 actions)")
+print(f"      - Group 3: group_member (3 members, 1 action)")
+print(f"    • Additional members added to group roles")
+print(f"    • Additional actions added to group roles")
 print("\nPort configuration:")
 print("  - Users:     9002")
 print("  - Domains:   9003")

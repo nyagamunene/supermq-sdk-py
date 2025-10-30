@@ -524,9 +524,9 @@ class DomainsApi(object):
         :param dict(str, object) metadata: Metadata filter. Filtering is performed matching the parameter with metadata on top level. Parameter is json.
         :param str status: Domain status.
         :param str name: Domain's name.
-        :param str actions: Lists domains that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List domains that the user has the given role ID on.
-        :param str role_name: List domains that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the domain.
         :param bool only_total: If true, the response will contain only the total number of domains that match the query parameters.
         :return: DomainsPage
@@ -557,9 +557,9 @@ class DomainsApi(object):
         :param dict(str, object) metadata: Metadata filter. Filtering is performed matching the parameter with metadata on top level. Parameter is json.
         :param str status: Domain status.
         :param str name: Domain's name.
-        :param str actions: Lists domains that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List domains that the user has the given role ID on.
-        :param str role_name: List domains that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the domain.
         :param bool only_total: If true, the response will contain only the total number of domains that match the query parameters.
         :return: DomainsPage

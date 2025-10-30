@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**role_name** | **str** | Role&#x27;s name. | [optional] 
+**name** | **str** | Role&#x27;s name. | [optional] 
 **optional_actions** | **list[str]** | List of optional actions. | [optional] 
 **optional_members** | **list[str]** | List of optional members. | [optional] 
 

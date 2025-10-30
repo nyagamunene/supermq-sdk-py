@@ -28,8 +28,8 @@ class Role(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'role_id': 'str',
-        'role_name': 'str',
+        'id': 'str',
+        'name': 'str',
         'entity_id': 'str',
         'created_by': 'str',
         'created_at': 'datetime',
@@ -38,8 +38,8 @@ class Role(object):
     }
 
     attribute_map = {
-        'role_id': 'role_id',
-        'role_name': 'role_name',
+        'id': 'id',
+        'name': 'name',
         'entity_id': 'entity_id',
         'created_by': 'created_by',
         'created_at': 'created_at',
@@ -47,20 +47,20 @@ class Role(object):
         'updated_at': 'updated_at'
     }
 
-    def __init__(self, role_id=None, role_name=None, entity_id=None, created_by=None, created_at=None, updated_by=None, updated_at=None):  # noqa: E501
+    def __init__(self, id=None, name=None, entity_id=None, created_by=None, created_at=None, updated_by=None, updated_at=None):  # noqa: E501
         """Role - a model defined in Swagger"""  # noqa: E501
-        self._role_id = None
-        self._role_name = None
+        self._id = None
+        self._name = None
         self._entity_id = None
         self._created_by = None
         self._created_at = None
         self._updated_by = None
         self._updated_at = None
         self.discriminator = None
-        if role_id is not None:
-            self.role_id = role_id
-        if role_name is not None:
-            self.role_name = role_name
+        if id is not None:
+            self.id = id
+        if name is not None:
+            self.name = name
         if entity_id is not None:
             self.entity_id = entity_id
         if created_by is not None:
@@ -73,50 +73,50 @@ class Role(object):
             self.updated_at = updated_at
 
     @property
-    def role_id(self):
-        """Gets the role_id of this Role.  # noqa: E501
+    def id(self):
+        """Gets the id of this Role.  # noqa: E501
 
         Role unique identifier.  # noqa: E501
 
-        :return: The role_id of this Role.  # noqa: E501
+        :return: The id of this Role.  # noqa: E501
         :rtype: str
         """
-        return self._role_id
+        return self._id
 
-    @role_id.setter
-    def role_id(self, role_id):
-        """Sets the role_id of this Role.
+    @id.setter
+    def id(self, id):
+        """Sets the id of this Role.
 
         Role unique identifier.  # noqa: E501
 
-        :param role_id: The role_id of this Role.  # noqa: E501
+        :param id: The id of this Role.  # noqa: E501
         :type: str
         """
 
-        self._role_id = role_id
+        self._id = id
 
     @property
-    def role_name(self):
-        """Gets the role_name of this Role.  # noqa: E501
+    def name(self):
+        """Gets the name of this Role.  # noqa: E501
 
         Role's name.  # noqa: E501
 
-        :return: The role_name of this Role.  # noqa: E501
+        :return: The name of this Role.  # noqa: E501
         :rtype: str
         """
-        return self._role_name
+        return self._name
 
-    @role_name.setter
-    def role_name(self, role_name):
-        """Sets the role_name of this Role.
+    @name.setter
+    def name(self, name):
+        """Sets the name of this Role.
 
         Role's name.  # noqa: E501
 
-        :param role_name: The role_name of this Role.  # noqa: E501
+        :param name: The name of this Role.  # noqa: E501
         :type: str
         """
 
-        self._role_name = role_name
+        self._name = name
 
     @property
     def entity_id(self):

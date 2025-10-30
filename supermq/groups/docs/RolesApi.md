@@ -21,7 +21,7 @@ Method | HTTP request | Description
 [**update_group_role**](RolesApi.md#update_group_role) | **PUT** /{domainID}/groups/{groupID}/roles/{roleID} | Updates group role.
 
 # **add_group_role_action**
-> RoleActionsObj add_group_role_action(body, domain_id, group_id, role_id=role_id)
+> RoleActionsObj add_group_role_action(body, domain_id, group_id, role_id)
 
 Adds a role action for a group role.
 
@@ -41,11 +41,11 @@ api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleActionsObj() # RoleActionsObj | JSON- formatted object decsribing an action to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Adds a role action for a group role.
-    api_response = api_instance.add_group_role_action(body, domain_id, group_id, role_id=role_id)
+    api_response = api_instance.add_group_role_action(body, domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->add_group_role_action: %s\n" % e)
@@ -58,7 +58,7 @@ Name | Type | Description  | Notes
  **body** | [**RoleActionsObj**](RoleActionsObj.md)| JSON- formatted object decsribing an action to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **add_group_role_member**
-> RoleMembersObj add_group_role_member(body, domain_id, group_id, role_id=role_id)
+> RoleMembersObj add_group_role_member(body, domain_id, group_id, role_id)
 
 Adds a member to a group role.
 
@@ -96,11 +96,11 @@ api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleMembersObj() # RoleMembersObj | JSON- formatted object decsribing a member to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Adds a member to a group role.
-    api_response = api_instance.add_group_role_member(body, domain_id, group_id, role_id=role_id)
+    api_response = api_instance.add_group_role_member(body, domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->add_group_role_member: %s\n" % e)
@@ -113,7 +113,7 @@ Name | Type | Description  | Notes
  **body** | [**RoleMembersObj**](RoleMembersObj.md)| JSON- formatted object decsribing a member to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -184,7 +184,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_all_group_role_actions**
-> delete_all_group_role_actions(domain_id, group_id, role_id=role_id)
+> delete_all_group_role_actions(domain_id, group_id, role_id)
 
 Deletes all role actions for a group role.
 
@@ -203,11 +203,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes all role actions for a group role.
-    api_instance.delete_all_group_role_actions(domain_id, group_id, role_id=role_id)
+    api_instance.delete_all_group_role_actions(domain_id, group_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_all_group_role_actions: %s\n" % e)
 ```
@@ -218,7 +218,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -236,7 +236,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_all_group_role_members**
-> delete_all_group_role_members(domain_id, group_id, role_id=role_id)
+> delete_all_group_role_members(domain_id, group_id, role_id)
 
 Deletes all members from a group role.
 
@@ -255,11 +255,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes all members from a group role.
-    api_instance.delete_all_group_role_members(domain_id, group_id, role_id=role_id)
+    api_instance.delete_all_group_role_members(domain_id, group_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_all_group_role_members: %s\n" % e)
 ```
@@ -270,7 +270,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -288,7 +288,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_group_role**
-> delete_group_role(domain_id, group_id, role_id=role_id)
+> delete_group_role(domain_id, group_id, role_id)
 
 Deletes group role.
 
@@ -307,11 +307,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes group role.
-    api_instance.delete_group_role(domain_id, group_id, role_id=role_id)
+    api_instance.delete_group_role(domain_id, group_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_group_role: %s\n" % e)
 ```
@@ -322,7 +322,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -340,7 +340,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_group_role_action**
-> delete_group_role_action(body, domain_id, group_id, role_id=role_id)
+> delete_group_role_action(body, domain_id, group_id, role_id)
 
 Deletes role actions for a group role.
 
@@ -360,11 +360,11 @@ api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleActionsObj() # RoleActionsObj | JSON- formatted object decsribing an action to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes role actions for a group role.
-    api_instance.delete_group_role_action(body, domain_id, group_id, role_id=role_id)
+    api_instance.delete_group_role_action(body, domain_id, group_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_group_role_action: %s\n" % e)
 ```
@@ -376,7 +376,7 @@ Name | Type | Description  | Notes
  **body** | [**RoleActionsObj**](RoleActionsObj.md)| JSON- formatted object decsribing an action to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -394,7 +394,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_group_role_members**
-> delete_group_role_members(body, domain_id, group_id, role_id=role_id)
+> delete_group_role_members(body, domain_id, group_id, role_id)
 
 Deletes members from a group role.
 
@@ -414,11 +414,11 @@ api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.RoleMembersObj() # RoleMembersObj | JSON- formatted object decsribing a member to be added to a role.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Deletes members from a group role.
-    api_instance.delete_group_role_members(body, domain_id, group_id, role_id=role_id)
+    api_instance.delete_group_role_members(body, domain_id, group_id, role_id)
 except ApiException as e:
     print("Exception when calling RolesApi->delete_group_role_members: %s\n" % e)
 ```
@@ -430,7 +430,7 @@ Name | Type | Description  | Notes
  **body** | [**RoleMembersObj**](RoleMembersObj.md)| JSON- formatted object decsribing a member to be added to a role. | 
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -499,7 +499,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_group_role**
-> Role get_group_role(domain_id, group_id, role_id=role_id)
+> Role get_group_role(domain_id, group_id, role_id)
 
 Retrieves group role.
 
@@ -518,11 +518,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Retrieves group role.
-    api_response = api_instance.get_group_role(domain_id, group_id, role_id=role_id)
+    api_response = api_instance.get_group_role(domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->get_group_role: %s\n" % e)
@@ -534,7 +534,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -601,7 +601,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_group_role_actions**
-> RoleActionsObj list_group_role_actions(domain_id, group_id, role_id=role_id)
+> RoleActionsObj list_group_role_actions(domain_id, group_id, role_id)
 
 Lists group role actions.
 
@@ -620,11 +620,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Lists group role actions.
-    api_response = api_instance.list_group_role_actions(domain_id, group_id, role_id=role_id)
+    api_response = api_instance.list_group_role_actions(domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->list_group_role_actions: %s\n" % e)
@@ -636,7 +636,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -654,7 +654,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_group_role_members**
-> RoleMembersObj list_group_role_members(domain_id, group_id, role_id=role_id)
+> RoleMembersObj list_group_role_members(domain_id, group_id, role_id)
 
 Lists group role members.
 
@@ -673,11 +673,11 @@ from pprint import pprint
 api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Lists group role members.
-    api_response = api_instance.list_group_role_members(domain_id, group_id, role_id=role_id)
+    api_response = api_instance.list_group_role_members(domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->list_group_role_members: %s\n" % e)
@@ -689,7 +689,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 
@@ -762,7 +762,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_group_role**
-> Role update_group_role(body, domain_id, group_id, role_id=role_id)
+> Role update_group_role(body, domain_id, group_id, role_id)
 
 Updates group role.
 
@@ -782,11 +782,11 @@ api_instance = swagger_client.RolesApi(swagger_client.ApiClient(configuration))
 body = swagger_client.UpdateRoleObj() # UpdateRoleObj | JSON- formatted object decsribing a role to be updated.
 domain_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique domain identifier.
 group_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | Unique group identifier.
-role_id = '38400000-8cf0-11bd-b23e-10b96e4ef00d' # str | List groups that the user has the given role ID on. (optional)
+role_id = 'role_id_example' # str | Role ID.
 
 try:
     # Updates group role.
-    api_response = api_instance.update_group_role(body, domain_id, group_id, role_id=role_id)
+    api_response = api_instance.update_group_role(body, domain_id, group_id, role_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RolesApi->update_group_role: %s\n" % e)
@@ -799,7 +799,7 @@ Name | Type | Description  | Notes
  **body** | [**UpdateRoleObj**](UpdateRoleObj.md)| JSON- formatted object decsribing a role to be updated. | 
  **domain_id** | [**str**](.md)| Unique domain identifier. | 
  **group_id** | [**str**](.md)| Unique group identifier. | 
- **role_id** | [**str**](.md)| List groups that the user has the given role ID on. | [optional] 
+ **role_id** | **str**| Role ID. | 
 
 ### Return type
 

@@ -678,9 +678,9 @@ class ClientsApi(object):
         :param str name: Client's name.
         :param list[str] tags: Client tags.
         :param str id: List clients with the given ID.
-        :param str actions: Lists clients that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List clients that the user has the given role ID on.
-        :param str role_name: List clients that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the client.
         :param bool only_total: If true, the response will contain only the total number of clients that match the query parameters.
         :param str channel: If provided lists clients connected to a channel with the provided ID.
@@ -718,9 +718,9 @@ class ClientsApi(object):
         :param str name: Client's name.
         :param list[str] tags: Client tags.
         :param str id: List clients with the given ID.
-        :param str actions: Lists clients that the user has the given actions on. Multiple actions can be specified separated by comma.
-        :param str role_id: List clients that the user has the given role ID on.
-        :param str role_name: List clients that the user has the given role name on.
+        :param str actions: Filter by actions. Multiple actions can be specified separated by comma.
+        :param str role_id: Filter by role ID.
+        :param str role_name: Filter by role name.
         :param str access_type: Type of access the user has on the client.
         :param bool only_total: If true, the response will contain only the total number of clients that match the query parameters.
         :param str channel: If provided lists clients connected to a channel with the provided ID.

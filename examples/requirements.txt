@@ -1,0 +1,10 @@
+# Requirements for running SuperMQ/Magistrala SDK examples
+
+# HTTP client library for making requests
+requests>=2.31.0
+
+# Dependencies for Swagger-generated clients
+urllib3>=1.26.0
+certifi>=2023.7.22
+python-dateutil>=2.8.2
+six>=1.16.0

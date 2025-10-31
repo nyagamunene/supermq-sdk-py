@@ -10,10 +10,8 @@ import os
 import random
 import string
 
-# Add SDK paths
 sdk_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Helper function to generate random strings
 def random_string(length=8):
     """Generate a random string of lowercase letters"""
     return ''.join(random.choices(string.ascii_lowercase, k=length))
@@ -22,16 +20,13 @@ def random_email():
     """Generate a random email address"""
     return f"{random_string(8)}@example.com"
 
-# Helper function to load SDK
 def load_api(service_path, api_name):
     """Load a specific API from a service SDK"""
     full_path = os.path.join(sdk_root, service_path)
     sys.path.insert(0, full_path)
     try:
-        # Clear any cached swagger_client modules to avoid conflicts
         import importlib
         if 'swagger_client' in sys.modules:
-            # Remove all swagger_client related modules from cache
             modules_to_remove = [key for key in sys.modules.keys() if key.startswith('swagger_client')]
             for module in modules_to_remove:
                 del sys.modules[module]
@@ -47,108 +42,92 @@ print("=" * 80)
 print("SuperMQ and Magistrala SDK Examples")
 print("=" * 80)
 
-# Configuration
 default_url = "http://localhost"
 
-# Initialize Users API (port 9002)
 print("\nInitializing Users API (port 9002)...")
 UsersApiClient, UsersConfig, UsersApi = load_api('supermq/users', 'users')
 users_config = UsersConfig()
 users_config.host = default_url + ":9002"
 users_api = UsersApi(UsersApiClient(users_config))
 
-# Initialize Clients API (port 9006)
 print("Initializing Clients API (port 9006)...")
 ClientsApiClient, ClientsConfig, ClientsApi = load_api('supermq/clients', 'clients')
 clients_config = ClientsConfig()
 clients_config.host = default_url + ":9006"
 clients_api = ClientsApi(ClientsApiClient(clients_config))
 
-# Initialize Channels API (port 9005)
 print("Initializing Channels API (port 9005)...")
 ChannelsApiClient, ChannelsConfig, ChannelsApi = load_api('supermq/channels', 'channels')
 channels_config = ChannelsConfig()
 channels_config.host = default_url + ":9005"
 channels_api = ChannelsApi(ChannelsApiClient(channels_config))
 
-# Initialize Connections API (port 9005 - same as channels)
 print("Initializing Connections API (port 9005)...")
 ConnectionsApiClient, ConnectionsConfig, ConnectionsApi = load_api('supermq/channels', 'connections')
 connections_config = ConnectionsConfig()
 connections_config.host = default_url + ":9005"
 connections_api = ConnectionsApi(ConnectionsApiClient(connections_config))
 
-# Initialize Groups API (port 9004)
 print("Initializing Groups API (port 9004)...")
 GroupsApiClient, GroupsConfig, GroupsApi = load_api('supermq/groups', 'groups')
 groups_config = GroupsConfig()
 groups_config.host = default_url + ":9004"
 groups_api = GroupsApi(GroupsApiClient(groups_config))
 
-# Initialize Groups Roles API (port 9004 - same as groups)
 print("Initializing Groups Roles API (port 9004)...")
 GroupsRolesApiClient, GroupsRolesConfig, GroupsRolesApi = load_api('supermq/groups', 'roles')
 groups_roles_config = GroupsRolesConfig()
 groups_roles_config.host = default_url + ":9004"
 groups_roles_api = GroupsRolesApi(GroupsRolesApiClient(groups_roles_config))
 
-# Initialize Clients Roles API (port 9006 - same as clients)
 print("Initializing Clients Roles API (port 9006)...")
 ClientsRolesApiClient, ClientsRolesConfig, ClientsRolesApi = load_api('supermq/clients', 'roles')
 clients_roles_config = ClientsRolesConfig()
 clients_roles_config.host = default_url + ":9006"
 clients_roles_api = ClientsRolesApi(ClientsRolesApiClient(clients_roles_config))
 
-# Initialize Domains API (port 9003)
 print("Initializing Domains API (port 9003)...")
 DomainsApiClient, DomainsConfig, DomainsApi = load_api('supermq/domains', 'domains')
 domains_config = DomainsConfig()
 domains_config.host = default_url + ":9003"
 domains_api = DomainsApi(DomainsApiClient(domains_config))
 
-# Initialize Roles API (port 9003 - same as domains)
 print("Initializing Roles API (port 9003)...")
 RolesApiClient, RolesConfig, RolesApi = load_api('supermq/domains', 'roles')
 roles_config = RolesConfig()
 roles_config.host = default_url + ":9003"
 roles_api = RolesApi(RolesApiClient(roles_config))
 
-# Initialize Invitations API (port 9003 - same as domains)
 print("Initializing Invitations API (port 9003)...")
 InvitationsApiClient, InvitationsConfig, InvitationsApi = load_api('supermq/domains', 'invitations')
 invitations_config = InvitationsConfig()
 invitations_config.host = default_url + ":9003"
 invitations_api = InvitationsApi(InvitationsApiClient(invitations_config))
 
-# Initialize Bootstrap API (port 9013)
 print("Initializing Bootstrap API (port 9013)...")
 BootstrapApiClient, BootstrapConfig, ConfigsApi = load_api('magistrala/bootstrap', 'configs')
 bootstrap_config = BootstrapConfig()
 bootstrap_config.host = default_url + ":9013"
 bootstrap_api = ConfigsApi(BootstrapApiClient(bootstrap_config))
 
-# Initialize Readers API (port 9011)
 print("Initializing Readers API (port 9011)...")
 ReadersApiClient, ReadersConfig, ReadersApi = load_api('magistrala/readers', 'readers')
 readers_config = ReadersConfig()
 readers_config.host = default_url + ":9011"
 readers_api = ReadersApi(ReadersApiClient(readers_config))
 
-# Initialize Rules API (port 9008)
 print("Initializing Rules API (port 9008)...")
 RulesApiClient, RulesConfig, RulesApi = load_api('magistrala/rules', 'rules')
 rules_config = RulesConfig()
 rules_config.host = default_url + ":9008"
 rules_api = RulesApi(RulesApiClient(rules_config))
 
-# Initialize Reports API (port 9017)
 print("Initializing Reports API (port 9017)...")
 ReportsApiClient, ReportsConfig, ReportsApi = load_api('magistrala/reports', 'reports')
 reports_config = ReportsConfig()
 reports_config.host = default_url + ":9017"
 reports_api = ReportsApi(ReportsApiClient(reports_config))
 
-# Initialize Alarms API (port 8050)
 print("Initializing Alarms API (port 8050)...")
 AlarmsApiClient, AlarmsConfig, AlarmsApi = load_api('magistrala/alarms', 'alarms')
 alarms_config = AlarmsConfig()
@@ -165,7 +144,6 @@ print("=" * 80)
 print("HEALTH CHECKS")
 print("=" * 80)
 
-# Check Users Service
 print("\n1. Users Service (port 9002)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('supermq/users', 'health')
@@ -179,7 +157,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Domains Service
 print("\n2. Domains Service (port 9003)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('supermq/domains', 'health')
@@ -191,7 +168,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Groups Service
 print("\n3. Groups Service (port 9004)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('supermq/groups', 'health')
@@ -203,7 +179,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Channels Service
 print("\n4. Channels Service (port 9005)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('supermq/channels', 'health')
@@ -215,7 +190,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Clients Service
 print("\n5. Clients Service (port 9006)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('supermq/clients', 'health')
@@ -227,7 +201,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Readers Service
 print("\n6. Readers Service (port 9011)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('magistrala/readers', 'health')
@@ -239,7 +212,6 @@ try:
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
-# Check Bootstrap Service
 print("\n7. Bootstrap Service (port 9013)")
 try:
     HealthApiClient, HealthConfig, HealthApi = load_api('magistrala/bootstrap', 'health')

@@ -26,6 +26,9 @@ venv\Scripts\activate  # On Windows
 2. **Install required dependencies**:
 
 ```bash
+# Install all dependencies
+pip install -r requirements.txt
+
 # Install SuperMQ SDKs
 pip install -e ../supermq/users
 pip install -e ../supermq/clients
@@ -40,9 +43,6 @@ pip install -e ../magistrala/readers
 pip install -e ../magistrala/rules
 pip install -e ../magistrala/reports
 pip install -e ../magistrala/alarms
-
-# Install additional dependencies
-pip install requests
 ```
 
 ## Running the Examples

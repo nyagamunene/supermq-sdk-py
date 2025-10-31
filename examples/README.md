@@ -23,26 +23,17 @@ source venv/bin/activate  # On Linux/macOS
 venv\Scripts\activate  # On Windows
 ```
 
-2. **Install required dependencies**:
+2. **Navigate to the examples directory**:
+
+```bash
+cd examples
+```
+
+3. **Install required dependencies**:
 
 ```bash
 # Install all dependencies
 pip install -r requirements.txt
-
-# Install SuperMQ SDKs
-pip install -e ../supermq/users
-pip install -e ../supermq/clients
-pip install -e ../supermq/channels
-pip install -e ../supermq/groups
-pip install -e ../supermq/domains
-pip install -e ../supermq/http
-
-# Install Magistrala SDKs
-pip install -e ../magistrala/bootstrap
-pip install -e ../magistrala/readers
-pip install -e ../magistrala/rules
-pip install -e ../magistrala/reports
-pip install -e ../magistrala/alarms
 ```
 
 ## Running the Examples

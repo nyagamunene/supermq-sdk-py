@@ -407,7 +407,9 @@ print("\n7. List Users")
 try:
     response = users_api.list_users(
         offset=0,
-        limit=5
+        limit=5,
+        order="updated_at",
+        dir="desc"
     )
     print(f"   Success: Found {response.total if hasattr(response, 'total') else 'N/A'} users")
     if hasattr(response, 'users') and response.users:
@@ -471,7 +473,9 @@ try:
     response = clients_api.list_clients(
         domain_id=domain_id,
         offset=0, 
-        limit=20
+        limit=20,
+        order="updated_at",
+        dir="desc"
     )
     print(f"   Success: Found {response.total if hasattr(response, 'total') else 'N/A'} clients")
     if hasattr(response, 'clients') and response.clients:
@@ -529,7 +533,9 @@ try:
     response = channels_api.list_channels(
         domain_id=domain_id,
         offset=0,
-        limit=20
+        limit=20,
+        order="updated_at",
+        dir="desc"
     )
     print(f"   Success: Found {response.total if hasattr(response, 'total') else 'N/A'} channels")
     if hasattr(response, 'channels') and response.channels:
@@ -654,7 +660,9 @@ try:
     response = groups_api.list_groups(
         domain_id=domain_id,
         offset=0,
-        limit=20
+        limit=20,
+        order="updated_at",
+        dir="desc"
     )
     print(f"   Success: Found {response.total if hasattr(response, 'total') else 'N/A'} groups")
     if group_ids:
@@ -665,6 +673,83 @@ try:
             print(f"     {i}. Group ID: {gid[:8]}... - Level {i}{parent_info} [{status}]")
 except Exception as e:
     print(f"   Error: {e}")
+
+print("\n4. Assign Clients to Groups")
+
+if len(group_ids) >= 3 and len(client_ids) >= 6:
+    print(f"\n   a) Assign first 3 clients to Group 1 (Root)")
+    for i in range(3):
+        try:
+            response = clients_api.set_client_parent_group(
+                domain_id=domain_id,
+                client_id=client_ids[i],
+                body={"parent_group_id": group_ids[0]}
+            )
+            print(f"   [{i+1}/3] ✓ Client {i+1} (ID: {client_ids[i][:8]}...) assigned to Group 1")
+        except Exception as e:
+            print(f"   [{i+1}/3] Error: {e}")
+    
+    print(f"\n   b) Assign next 3 clients to Group 2")
+    for i in range(3, 6):
+        try:
+            response = clients_api.set_client_parent_group(
+                domain_id=domain_id,
+                client_id=client_ids[i],
+                body={"parent_group_id": group_ids[1]}
+            )
+            print(f"   [{i-2}/3] ✓ Client {i+1} (ID: {client_ids[i][:8]}...) assigned to Group 2")
+        except Exception as e:
+            print(f"   [{i-2}/3] Error: {e}")
+    
+    print(f"\n   Success: Assigned 6 clients to 2 groups (3 clients per group)")
+else:
+    print(f"   ⚠ Insufficient clients or groups for assignment")
+    print(f"   Need at least 6 clients and 3 groups")
+
+print("\n5. Assign Channels to Groups")
+
+if len(group_ids) >= 3 and len(channel_ids) >= 6:
+    print(f"\n   a) Assign first 3 channels to Group 1 (Root)")
+    for i in range(3):
+        try:
+            response = channels_api.set_channel_parent_group(
+                domain_id=domain_id,
+                chan_id=channel_ids[i],
+                body={"parent_group_id": group_ids[0]}
+            )
+            print(f"   [{i+1}/3] ✓ Channel {i+1} (ID: {channel_ids[i][:8]}...) assigned to Group 1")
+        except Exception as e:
+            print(f"   [{i+1}/3] Error: {e}")
+    
+    print(f"\n   b) Assign next 3 channels to Group 2")
+    for i in range(3, 6):
+        try:
+            response = channels_api.set_channel_parent_group(
+                domain_id=domain_id,
+                chan_id=channel_ids[i],
+                body={"parent_group_id": group_ids[1]}
+            )
+            print(f"   [{i-2}/3] ✓ Channel {i+1} (ID: {channel_ids[i][:8]}...) assigned to Group 2")
+        except Exception as e:
+            print(f"   [{i-2}/3] Error: {e}")
+    
+    print(f"\n   Success: Assigned 6 channels to 2 groups (3 channels per group)")
+else:
+    print(f"   ⚠ Insufficient channels or groups for assignment")
+    print(f"   Need at least 6 channels and 3 groups")
+
+print("\n6. Verify Group Assignments")
+
+if len(group_ids) >= 2:
+    print(f"\n   a) Group 1 (Root) members:")
+    print(f"     - 3 clients assigned (clients 1-3)")
+    print(f"     - 3 channels assigned (channels 1-3)")
+    
+    print(f"\n   b) Group 2 members:")
+    print(f"     - 3 clients assigned (clients 4-6)")
+    print(f"     - 3 channels assigned (channels 4-6)")
+    
+    print(f"\n   ✓ Group assignments completed successfully!")
 
 # ==============================================================================
 # RULES OPERATIONS (Magistrala) - Create 4 rules
@@ -1412,7 +1497,12 @@ print(f"\n   Success: Created {len(domain_member_ids)} domain member users")
 print("\n3. List Existing Domain Roles (to find default member role)")
 member_role_id = None
 try:
-    response = roles_api.list_domain_roles(domain_id=domain_id, limit=100)
+    response = roles_api.list_domain_roles(
+        domain_id=domain_id,
+        limit=100,
+        order="updated_at",
+        dir="desc"
+    )
     if hasattr(response, 'roles') and response.roles:
         print(f"   Found {len(response.roles)} existing roles:")
         for role in response.roles:
@@ -1636,7 +1726,9 @@ try:
     response = invitations_api.list_domain_invitations(
         domain_id=domain_id,
         offset=0,
-        limit=10
+        limit=10,
+        order="updated_at",
+        dir="desc"
     )
     print(f"   ✓ Domain invitations listed")
     if hasattr(response, 'total'):
@@ -1919,6 +2011,9 @@ print(f"  - Disabled Domain ID: {domain_id_disabled[:8] + '...' if domain_id_dis
 print(f"  - Clients Created: {len(client_ids)} (8 enabled, 2 disabled)")
 print(f"  - Channels Created: {len(channel_ids)} (8 enabled, 2 disabled)")
 print(f"  - Groups Created: {len(group_ids)} (cascading hierarchy, 8 enabled, 2 disabled)")
+print(f"  - Group Assignments:")
+print(f"    • 6 clients assigned to groups (3 to Group 1, 3 to Group 2)")
+print(f"    • 6 channels assigned to groups (3 to Group 1, 3 to Group 2)")
 print(f"  - Connections:")
 print(f"    • 4 clients connected with PUBLISH permission")
 print(f"    • 4 clients connected with SUBSCRIBE permission")

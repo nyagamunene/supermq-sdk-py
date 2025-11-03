@@ -50,7 +50,8 @@ class ChannelsPage(object):
         self.discriminator = None
         self.channels = channels
         self.total = total
-        self.offset = offset
+        if offset is not None:
+            self.offset = offset
         if limit is not None:
             self.limit = limit
 
@@ -122,8 +123,6 @@ class ChannelsPage(object):
         :param offset: The offset of this ChannelsPage.  # noqa: E501
         :type: int
         """
-        if offset is None:
-            raise ValueError("Invalid value for `offset`, must not be `None`")  # noqa: E501
 
         self._offset = offset
 

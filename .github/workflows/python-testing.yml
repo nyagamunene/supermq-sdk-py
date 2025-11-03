@@ -33,4 +33,4 @@ jobs:
         flake8 examples --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
     - name: Validate examples structure
       run: |
-        python -c "import sys; import os; sys.path.insert(0, os.path.join(os.getcwd(), 'examples')); print('✓ Examples structure validated')"
+        python -c "import sys; import os; sys.path.insert(0, os.path.join(os.getcwd(), 'examples')); print('Examples structure validated')"

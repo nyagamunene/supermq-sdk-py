@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """
-SuperMQ and Magistrala Python SDK Examples using Swagger Codegen Generated SDKs
+SuperMQ and Magistrala Python SDK Examples
 
 This file demonstrates how to use both SuperMQ and Magistrala services together.
 It shows proper authentication flow and how services interact.
 """
-import sys
 import os
 import random
 import string
+import time
+import requests
 
-sdk_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from supermq import SDK as SuperMQSDK
+from magistrala import SDK as MagistralaSDK
 
 def random_string(length=8):
     """Generate a random string of lowercase letters"""
@@ -20,119 +22,34 @@ def random_email():
     """Generate a random email address"""
     return f"{random_string(8)}@example.com"
 
-def load_api(service_path, api_name):
-    """Load a specific API from a service SDK"""
-    full_path = os.path.join(sdk_root, service_path)
-    sys.path.insert(0, full_path)
-    try:
-        import importlib
-        if 'swagger_client' in sys.modules:
-            modules_to_remove = [key for key in sys.modules.keys() if key.startswith('swagger_client')]
-            for module in modules_to_remove:
-                del sys.modules[module]
-        
-        from swagger_client import ApiClient, Configuration
-        api_module = __import__(f'swagger_client.api.{api_name}_api', fromlist=[f'{api_name.title().replace("_", "")}Api'])
-        api_class = getattr(api_module, f'{api_name.title().replace("_", "")}Api')
-        return ApiClient, Configuration, api_class
-    finally:
-        sys.path.pop(0)
-
 print("=" * 80)
 print("SuperMQ and Magistrala SDK Examples")
 print("=" * 80)
 
 default_url = "http://localhost"
 
-print("\nInitializing Users API (port 9002)...")
-UsersApiClient, UsersConfig, UsersApi = load_api('supermq/users', 'users')
-users_config = UsersConfig()
-users_config.host = default_url + ":9002"
-users_api = UsersApi(UsersApiClient(users_config))
+print("\nInitializing SuperMQ SDK...")
+smq = SuperMQSDK(default_url=default_url)
 
-print("Initializing Clients API (port 9006)...")
-ClientsApiClient, ClientsConfig, ClientsApi = load_api('supermq/clients', 'clients')
-clients_config = ClientsConfig()
-clients_config.host = default_url + ":9006"
-clients_api = ClientsApi(ClientsApiClient(clients_config))
+print("Initializing Magistrala SDK...")
+mgl = MagistralaSDK(default_url=default_url)
 
-print("Initializing Channels API (port 9005)...")
-ChannelsApiClient, ChannelsConfig, ChannelsApi = load_api('supermq/channels', 'channels')
-channels_config = ChannelsConfig()
-channels_config.host = default_url + ":9005"
-channels_api = ChannelsApi(ChannelsApiClient(channels_config))
-
-print("Initializing Connections API (port 9005)...")
-ConnectionsApiClient, ConnectionsConfig, ConnectionsApi = load_api('supermq/channels', 'connections')
-connections_config = ConnectionsConfig()
-connections_config.host = default_url + ":9005"
-connections_api = ConnectionsApi(ConnectionsApiClient(connections_config))
-
-print("Initializing Groups API (port 9004)...")
-GroupsApiClient, GroupsConfig, GroupsApi = load_api('supermq/groups', 'groups')
-groups_config = GroupsConfig()
-groups_config.host = default_url + ":9004"
-groups_api = GroupsApi(GroupsApiClient(groups_config))
-
-print("Initializing Groups Roles API (port 9004)...")
-GroupsRolesApiClient, GroupsRolesConfig, GroupsRolesApi = load_api('supermq/groups', 'roles')
-groups_roles_config = GroupsRolesConfig()
-groups_roles_config.host = default_url + ":9004"
-groups_roles_api = GroupsRolesApi(GroupsRolesApiClient(groups_roles_config))
-
-print("Initializing Clients Roles API (port 9006)...")
-ClientsRolesApiClient, ClientsRolesConfig, ClientsRolesApi = load_api('supermq/clients', 'roles')
-clients_roles_config = ClientsRolesConfig()
-clients_roles_config.host = default_url + ":9006"
-clients_roles_api = ClientsRolesApi(ClientsRolesApiClient(clients_roles_config))
-
-print("Initializing Domains API (port 9003)...")
-DomainsApiClient, DomainsConfig, DomainsApi = load_api('supermq/domains', 'domains')
-domains_config = DomainsConfig()
-domains_config.host = default_url + ":9003"
-domains_api = DomainsApi(DomainsApiClient(domains_config))
-
-print("Initializing Roles API (port 9003)...")
-RolesApiClient, RolesConfig, RolesApi = load_api('supermq/domains', 'roles')
-roles_config = RolesConfig()
-roles_config.host = default_url + ":9003"
-roles_api = RolesApi(RolesApiClient(roles_config))
-
-print("Initializing Invitations API (port 9003)...")
-InvitationsApiClient, InvitationsConfig, InvitationsApi = load_api('supermq/domains', 'invitations')
-invitations_config = InvitationsConfig()
-invitations_config.host = default_url + ":9003"
-invitations_api = InvitationsApi(InvitationsApiClient(invitations_config))
-
-print("Initializing Bootstrap API (port 9013)...")
-BootstrapApiClient, BootstrapConfig, ConfigsApi = load_api('magistrala/bootstrap', 'configs')
-bootstrap_config = BootstrapConfig()
-bootstrap_config.host = default_url + ":9013"
-bootstrap_api = ConfigsApi(BootstrapApiClient(bootstrap_config))
-
-print("Initializing Readers API (port 9011)...")
-ReadersApiClient, ReadersConfig, ReadersApi = load_api('magistrala/readers', 'readers')
-readers_config = ReadersConfig()
-readers_config.host = default_url + ":9011"
-readers_api = ReadersApi(ReadersApiClient(readers_config))
-
-print("Initializing Rules API (port 9008)...")
-RulesApiClient, RulesConfig, RulesApi = load_api('magistrala/rules', 'rules')
-rules_config = RulesConfig()
-rules_config.host = default_url + ":9008"
-rules_api = RulesApi(RulesApiClient(rules_config))
-
-print("Initializing Reports API (port 9017)...")
-ReportsApiClient, ReportsConfig, ReportsApi = load_api('magistrala/reports', 'reports')
-reports_config = ReportsConfig()
-reports_config.host = default_url + ":9017"
-reports_api = ReportsApi(ReportsApiClient(reports_config))
-
-print("Initializing Alarms API (port 8050)...")
-AlarmsApiClient, AlarmsConfig, AlarmsApi = load_api('magistrala/alarms', 'alarms')
-alarms_config = AlarmsConfig()
-alarms_config.host = default_url + ":8050"
-alarms_api = AlarmsApi(AlarmsApiClient(alarms_config))
+# Create shorthand references for commonly used APIs
+users_api = smq.users
+clients_api = smq.clients
+channels_api = smq.channels
+connections_api = smq.connections
+groups_api = smq.groups
+groups_roles_api = smq.groups_roles
+clients_roles_api = smq.clients_roles
+domains_api = smq.domains
+roles_api = smq.roles
+invitations_api = smq.invitations
+bootstrap_api = mgl.bootstrap
+readers_api = mgl.readers
+rules_api = mgl.rules
+reports_api = mgl.reports
+alarms_api = mgl.alarms
 
 print("\nAll API clients initialized!\n")
 
@@ -146,11 +63,7 @@ print("=" * 80)
 
 print("\n1. Users Service (port 9002)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('supermq/users', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9002"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health()
+    response = smq.users_health.health()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
     if hasattr(response, 'version'):
         print(f"   Version: {response.version}")
@@ -159,66 +72,35 @@ except Exception as e:
 
 print("\n2. Domains Service (port 9003)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('supermq/domains', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9003"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health_get()
+    response = smq.domains_health.health_get()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
 print("\n3. Groups Service (port 9004)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('supermq/groups', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9004"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health()
+    response = smq.groups_health.health()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
 print("\n4. Channels Service (port 9005)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('supermq/channels', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9005"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health_get()
+    response = smq.channels_health.health_get()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
 print("\n5. Clients Service (port 9006)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('supermq/clients', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9006"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health_get()
+    response = smq.clients_health.health_get()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
 except Exception as e:
     print(f"   ✗ Error: {e}")
 
 print("\n6. Readers Service (port 9011)")
 try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('magistrala/readers', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9011"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health()
-    print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
-except Exception as e:
-    print(f"   ✗ Error: {e}")
-
-print("\n7. Bootstrap Service (port 9013)")
-try:
-    HealthApiClient, HealthConfig, HealthApi = load_api('magistrala/bootstrap', 'health')
-    health_config = HealthConfig()
-    health_config.host = default_url + ":9013"
-    health_api = HealthApi(HealthApiClient(health_config))
-    response = health_api.health_get()
+    response = mgl.readers_health.health()
     print(f"   ✓ Status: {response.status if hasattr(response, 'status') else 'OK'}")
 except Exception as e:
     print(f"   ✗ Error: {e}")
@@ -289,37 +171,17 @@ try:
         token = response.access_token
         print(f"   Access Token: {token[:20]}...")
         
-        users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        invitations_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        clients_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        clients_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        channels_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        connections_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        groups_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        groups_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        rules_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        reports_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        alarms_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        # Set token for all SuperMQ and Magistrala services
+        smq.set_token(token)
+        mgl.set_token(token)
         print(f"   Authorization headers set for all services")
     elif isinstance(response, dict) and 'access_token' in response:
         token = response['access_token']
         print(f"   Access Token: {token[:20]}...")
         
-        users_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        domains_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        invitations_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        clients_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        clients_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        channels_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        connections_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        groups_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        groups_roles_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        rules_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        reports_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
-        alarms_api.api_client.default_headers['Authorization'] = f'Bearer {token}'
+        # Set token for all SuperMQ and Magistrala services
+        smq.set_token(token)
+        mgl.set_token(token)
         print(f"   Authorization headers set for all services")
     else:
         print(f"   Response: {response}")
@@ -933,10 +795,6 @@ print("\n" + "=" * 80)
 print("MESSAGING OPERATIONS - Sending SenML temperature messages")
 print("=" * 80)
 
-import requests
-import time
-import json
-
 publish_clients = [(client_ids[i], client_secrets[i]) for i in range(min(4, len(client_ids)))]
 
 """Send 50 SenML messages to channel with save_senml rule"""
@@ -1059,7 +917,7 @@ if len(publish_channel_ids) >= 1 and len(publish_clients) >= 1:
         )
         
         if response.status_code == 200:
-            examples_dir = os.path.join(sdk_root, 'examples')
+            examples_dir = os.path.dirname(os.path.abspath(__file__))
             report_filename = "temperature_report.pdf"
             report_path = os.path.join(examples_dir, report_filename)
             

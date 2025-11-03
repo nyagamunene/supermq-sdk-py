@@ -1,4 +1,4 @@
-# Requirements for running SuperMQ/Magistrala SDK examples
+# SuperMQ/Magistrala Python SDK Requirements
 
 # HTTP client library for making requests
 requests>=2.31.0

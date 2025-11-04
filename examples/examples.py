@@ -8,6 +8,7 @@ It shows proper authentication flow and how services interact.
 import os
 import random
 import string
+import sys
 import time
 import requests
 
@@ -27,6 +28,29 @@ print("SuperMQ and Magistrala SDK Examples")
 print("=" * 80)
 
 default_url = "http://localhost"
+
+print("\nChecking if SuperMQ services are running...")
+try:
+    response = requests.get(f"{default_url}:9002/health", timeout=2)
+    if response.status_code == 200:
+        print("✓ Services are running")
+    else:
+        print("✗ Services responded but may not be ready")
+except requests.exceptions.ConnectionError:
+    print()
+    print("=" * 80)
+    print("⚠️  ERROR: SuperMQ/Magistrala services are NOT running!")
+    print()
+    print("   Please start the services first:")
+    print("   1. Navigate to SuperMQ project folder")
+    print("   2. Run: make run args=\"-d\"")
+    print("   3. Verify with: docker-compose ps")
+    print("=" * 80)
+    print()
+    sys.exit(1)
+except Exception as e:
+    print(f"⚠️  Warning: Could not verify services are running: {e}")
+    print("   Continuing anyway...")
 
 print("\nInitializing SuperMQ SDK...")
 smq = SuperMQSDK(default_url=default_url)
